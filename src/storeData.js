@@ -79,22 +79,44 @@ export const initialStoreData = [
       { month: 'Mayo', flujo: 13668, boletas: 671, conversion: 4.9 }
     ]
   },
-  {
+    {
     name: "Puerto Montt",
     data: [
+      { month: 'Enero', flujo: 11472, boletas: 553, conversion: 4.8 },
+      { month: 'Febrero', flujo: 11332, boletas: 456, conversion: 4.0 },
+      { month: 'Marzo', flujo: 9579, boletas: 420, conversion: 4.4 },
+      { month: 'Abril', flujo: 6171, boletas: 242, conversion: 3.9 },
       { month: 'Mayo', flujo: 4624, boletas: 219, conversion: 4.7 }
     ]
   },
   {
     name: "Parque Arauco",
     data: [
+      { month: 'Enero', flujo: 6751, boletas: 629, conversion: 9.3 },
+      { month: 'Febrero', flujo: 5571, boletas: 491, conversion: 8.8 },
+      { month: 'Marzo', flujo: 6237, boletas: 526, conversion: 8.4 },
+      { month: 'Abril', flujo: 5529, boletas: 566, conversion: 10.2 },
       { month: 'Mayo', flujo: 5733, boletas: 470, conversion: 8.2 }
     ]
   },
   {
     name: "Tienda Arena MS",
     data: [
+      { month: 'Enero', flujo: 8003, boletas: 959, conversion: 12.0 },
+      { month: 'Febrero', flujo: 5586, boletas: 634, conversion: 11.3 },
+      { month: 'Marzo', flujo: 5561, boletas: 791, conversion: 14.2 },
+      { month: 'Abril', flujo: 4031, boletas: 549, conversion: 13.6 },
       { month: 'Mayo', flujo: 4205, boletas: 707, conversion: 16.8 }
+    ]
+  },
+    {
+    name: "Resumen",
+    data: [
+      { month: 'Enero', flujo: 97245, boletas: 7896, conversion: 8.12 },
+      { month: 'Febrero', flujo: 89042, boletas: 6466, conversion: 7.26 },
+      { month: 'Marzo', flujo: 93066, boletas: 7306, conversion: 7.85 },
+      { month: 'Abril', flujo: 77069, boletas: 6626, conversion: 8.60 },
+      { month: 'Mayo', flujo: 66866, boletas: 5433, conversion: 8.13 }
     ]
   }
 ];
