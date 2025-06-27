@@ -121,6 +121,17 @@ export default function RetailDashboard() {
     return obj;
   });
 
+  // Definir handleMonthChange aquí para cambiar la selección de meses
+  const handleMonthChange = (month) => {
+    setMonthsVisible(prevMonths => {
+      if (prevMonths.includes(month)) {
+        return prevMonths.filter(m => m !== month); // Deselecciona el mes
+      } else {
+        return [...prevMonths, month]; // Selecciona el mes
+      }
+    });
+  };
+
   const handleDataChange = (storeName, month, field, value) => {
     setStoreData(prevData => {
       return prevData.map(store => {
@@ -335,6 +346,25 @@ export default function RetailDashboard() {
             </button>
           </div>
         </div>
+        {/* Selector de meses con checkboxes */}
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-gray-700 mb-2">Seleccionar Meses:</label>
+          <div className="flex flex-wrap gap-4">
+            {MONTHS_ORDER.map((month, index) => (
+              <label key={index} className="flex items-center">
+                <input
+                  type="checkbox"
+                  name="month"
+                  value={month}
+                  checked={monthsVisible.includes(month)}
+                  onChange={() => handleMonthChange(month)}
+                  className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                />
+                <span className="ml-2 text-sm text-gray-700">{month}</span>
+              </label>
+            ))}
+          </div>
+        </div>
       </div>
       <div className="bg-white p-4 rounded-lg shadow" style={{ height: 450 }} ref={chartContainerRef}>
         <ResponsiveContainer width="100%" height="100%">
@@ -492,168 +522,6 @@ export default function RetailDashboard() {
             </AreaChart>
           )}
         </ResponsiveContainer>
-      </div>
-      <div className="mt-6 bg-white p-4 rounded-lg shadow max-w-full overflow-auto">
-        <h2 className="text-lg font-semibold mb-4">Editar Datos (todos los meses por tienda)</h2>
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[900px] table-auto border-collapse border border-gray-300">
-            <thead>
-              <tr className="bg-gray-100">
-                <th className="border border-gray-300 px-2 py-1 text-left align-bottom" rowSpan="2" style={{ minWidth: 120 }}>Tienda</th>
-                {monthsVisible.map((month) => (
-                  <th
-                    key={month}
-                    className="border border-gray-300 px-1 py-1 text-center"
-                    colSpan={3}
-                    style={{ minWidth: 90 }}
-                  >
-                    {month}
-                  </th>
-                ))}
-                <th
-                  className="border border-gray-300 px-1 py-1 text-center align-bottom"
-                  rowSpan="2"
-                  style={{ minWidth: 60, background: 'white' }}
-                >
-                  {canAddMonth && (
-                    <button
-                      onClick={handleAddMonth}
-                      aria-label="Agregar mes"
-                      className="text-4xl font-bold text-green-600 hover:text-green-800 focus:outline-none transition"
-                      style={{ lineHeight: '1', padding: '0 12px', background: 'white', border: 'none', cursor: 'pointer' }}
-                      disabled={!canAddMonth}
-                    >
-                      +
-                    </button>
-                  )}
-                </th>
-              </tr>
-              <tr className="bg-gray-100">
-                {monthsVisible.map((month) => (
-                  <React.Fragment key={month + "-header"}>
-                    <th key={month + "-flujo"} className="border border-gray-300 px-1 py-1 text-right" style={{ minWidth: 60, fontWeight: 500 }}>Flujo</th>
-                    <th key={month + "-boletas"} className="border border-gray-300 px-1 py-1 text-right" style={{ minWidth: 60, fontWeight: 500 }}>Boletas</th>
-                    <th key={month + "-conversion"} className="border border-gray-300 px-1 py-1 text-right" style={{ minWidth: 62, fontWeight: 500 }}>Conv. (%)</th>
-                  </React.Fragment>
-                ))}
-                <th className="border-none bg-white"></th>
-              </tr>
-            </thead>
-            <tbody>
-              {storeData
-                .filter(store => selectedStores[store.name])
-                .slice(0, 11)
-                .map((store, idx) => {
-                  const formatNumber = (num) => {
-                    if (num === '' || num === null || num === undefined) return '';
-                    const n = Number(num);
-                    if (isNaN(n)) return '';
-                    return n.toLocaleString('de-DE');
-                  };
-                  const parseNumber = (str) => {
-                    if (!str) return '';
-                    const cleaned = str.replace(/\./g, '').replace(/,/g, '.').trim();
-                    const n = Number(cleaned);
-                    return isNaN(n) ? '' : n;
-                  };
-                  const formatPercentage = (num) => {
-                    if (num === '' || num === null || num === undefined) return '';
-                    const n = Number(num);
-                    if (isNaN(n)) return '';
-                    return n.toFixed(1).replace('.', ',') + '%';
-                  };
-                  const parsePercentage = (str) => {
-                    if (!str) return '';
-                    const cleaned = str.replace('%', '').replace(/\./g, '').replace(/,/g, '.').trim();
-                    const n = Number(cleaned);
-                    return isNaN(n) ? '' : n;
-                  };
-                  const dataByMonth = {};
-                  store.data.forEach(d => { dataByMonth[d.month] = d; });
-                  return (
-                    <tr key={store.name} className="odd:bg-white even:bg-gray-50">
-                      <td className="border border-gray-300 px-2 py-1 font-medium sticky left-0 bg-inherit z-10" style={{ minWidth: 120 }}>
-                        {store.name}
-                      </td>
-                      {monthsVisible.map(month => {
-                        const entry = dataByMonth[month] || { flujo: '', boletas: '', conversion: '' };
-                        return (
-                          <React.Fragment key={month + store.name + "-inputs"}>
-                            <td key={month + store.name + "-flujo"} className="border border-gray-300 px-1 py-1 text-right">
-                              <input
-                                type="text"
-                                value={formatNumber(entry.flujo)}
-                                onChange={e => {
-                                  const val = parseNumber(e.target.value);
-                                  if (val === '' || !isNaN(val)) {
-                                    handleDataChange(store.name, month, 'flujo', val === '' ? '' : val);
-                                  }
-                                }}
-                                className="w-16 p-0.5 border rounded text-right text-xs"
-                                spellCheck="false"
-                                style={{ minWidth: 45, maxWidth: 60 }}
-                              />
-                            </td>
-                            <td key={month + store.name + "-boletas"} className="border border-gray-300 px-1 py-1 text-right">
-                              <input
-                                type="text"
-                                value={formatNumber(entry.boletas)}
-                                onChange={e => {
-                                  const val = parseNumber(e.target.value);
-                                  if (val === '' || !isNaN(val)) {
-                                    handleDataChange(store.name, month, 'boletas', val === '' ? '' : val);
-                                  }
-                                }}
-                                className="w-14 p-0.5 border rounded text-right text-xs"
-                                spellCheck="false"
-                                style={{ minWidth: 38, maxWidth: 55 }}
-                              />
-                            </td>
-                            <td key={month + store.name + "-conversion"} className="border border-gray-300 px-1 py-1 text-right">
-                              <input
-                                type="text"
-                                value={formatPercentage(entry.conversion)}
-                                onChange={e => {
-                                  const val = parsePercentage(e.target.value);
-                                  if (val === '' || !isNaN(val)) {
-                                    handleDataChange(store.name, month, 'conversion', val === '' ? '' : val);
-                                  }
-                                }}
-                                className="w-14 p-0.5 border rounded text-right text-xs"
-                                spellCheck="false"
-                                style={{ minWidth: 38, maxWidth: 55 }}
-                              />
-                            </td>
-                          </React.Fragment>
-                        );
-                      })}
-                      <td className="border-none bg-white"></td>
-                    </tr>
-                  );
-                })}
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div className="mt-6 flex justify-end gap-2">
-        <button
-          onClick={async () => {
-            if (chartContainerRef.current) {
-              try {
-                const canvas = await html2canvas(chartContainerRef.current, { backgroundColor: "#fff" });
-                const imgData = canvas.toDataURL("image/png");
-                generatePPT(storeData, selectedStores, monthsVisible, selectedMetric, imgData);
-              } catch (err) {
-                // Si falla, fallback a sin imagen
-                generatePPT(storeData, selectedStores, monthsVisible, selectedMetric);
-              }
-            } else {
-              generatePPT(storeData, selectedStores, monthsVisible, selectedMetric);
-            }
-          }}
-        >
-          Descargar PPT
-        </button>
       </div>
     </div>
   );
