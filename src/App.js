@@ -218,34 +218,34 @@ export default function RetailDashboard() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen p-4 bg-gray-50">
-      <h1 className="text-2xl font-bold mb-4 text-gray-800">Dashboard de Evolución de Tiendas - 2025</h1>
-      <div className="mb-6 bg-white p-4 rounded-lg shadow">
-        <div className="flex flex-col md:flex-row md:items-end md:gap-6">
-          <div className="mb-4 md:mb-0">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Seleccionar Métrica:</label>
+    <div className="flex flex-col min-h-screen p-8 bg-gradient-to-br from-indigo-50 via-white to-indigo-100 font-sans">
+      <h1 className="text-4xl font-bold mb-8 text-center text-indigo-900 tracking-tight drop-shadow-sm">Dashboard de Evolución de Tiendas - 2025</h1>
+      <div className="bg-white p-8 rounded-2xl shadow-2xl mb-10 border border-gray-200">
+        <div className="flex flex-col md:flex-row md:items-end md:gap-8 mb-8">
+          <div className="mb-6 md:mb-0 w-full md:w-1/4">
+            <label className="block text-base font-semibold text-gray-800 mb-3">Seleccionar Métrica:</label>
             <select
               value={selectedMetric}
               onChange={handleMetricChange}
-              className="block w-full max-w-xs p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+              className="block w-full max-w-xs p-3 border border-gray-300 rounded-xl shadow focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition hover:border-indigo-400 hover:bg-indigo-50 text-gray-900 text-base font-medium"
             >
               <option value="flujo">Flujo</option>
               <option value="boletas">Boletas</option>
               <option value="conversion">Conversión (%)</option>
             </select>
           </div>
-          <div className="mb-4 md:mb-0 flex-1">
-            <div className="flex items-center justify-between mb-2">
-              <label className="block text-sm font-medium text-gray-700">Seleccionar Tiendas:</label>
+          <div className="mb-6 md:mb-0 flex-1">
+            <div className="flex items-center justify-between mb-3">
+              <label className="block text-base font-semibold text-gray-800">Seleccionar Tiendas:</label>
               <button
                 onClick={handleSelectAllStores}
-                className="text-sm text-indigo-600 hover:text-indigo-800"
+                className="text-sm font-semibold text-indigo-600 hover:text-white hover:bg-indigo-600 px-3 py-1 rounded-lg transition duration-150 border border-indigo-200 shadow-sm"
               >
                 {Object.values(selectedStores).every(v => v) ? 'Deseleccionar Todas' : 'Seleccionar Todas'}
               </button>
             </div>
             {/* Botones de grupos de tiendas */}
-            <div className="mb-3 flex flex-wrap gap-2">
+            <div className="mb-4 flex flex-wrap gap-3">
               {(() => {
                 // Definición de los grupos, excluyendo "Resumen"
                 const grupo1 = [
@@ -279,21 +279,21 @@ export default function RetailDashboard() {
                   <>
                     <button
                       type="button"
-                      className="bg-indigo-600 text-white rounded px-3 py-1 mr-2 hover:bg-indigo-700 cursor-pointer"
+                      className="bg-indigo-600 text-white rounded-xl px-4 py-2 mr-2 hover:bg-indigo-700 shadow-md transition duration-150 cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-400"
                       onClick={() => handleSelectGroup(grupo1)}
                     >
                       Tienda Salomon
                     </button>
                     <button
                       type="button"
-                      className="bg-indigo-600 text-white rounded px-3 py-1 mr-2 hover:bg-indigo-700 cursor-pointer"
+                      className="bg-indigo-600 text-white rounded-xl px-4 py-2 mr-2 hover:bg-indigo-700 shadow-md transition duration-150 cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-400"
                       onClick={() => handleSelectGroup(grupo2)}
                     >
                       Tiendas Calles
                     </button>
                     <button
                       type="button"
-                      className="bg-indigo-600 text-white rounded px-3 py-1 mr-2 hover:bg-indigo-700 cursor-pointer"
+                      className="bg-indigo-600 text-white rounded-xl px-4 py-2 mr-2 hover:bg-indigo-700 shadow-md transition duration-150 cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-400"
                       onClick={() => handleSelectGroup(grupo3)}
                     >
                       Arena, Wilson MS y Easton 
@@ -302,7 +302,7 @@ export default function RetailDashboard() {
                 );
               })()}
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {storeData.map((store, index) => (
                 <div key={store.name} className="flex items-center">
                   <input
@@ -310,10 +310,10 @@ export default function RetailDashboard() {
                     id={`store-${index}`}
                     checked={selectedStores[store.name]}
                     onChange={() => handleStoreToggle(store.name)}
-                    className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                    className="h-4 w-4 text-indigo-600 border-gray-400 rounded-lg focus:ring-indigo-500 transition duration-150 hover:scale-110"
                   />
-                  <label htmlFor={`store-${index}`} className="ml-2 text-sm text-gray-700 flex items-center">
-                    <span className="w-3 h-3 inline-block mr-1" style={{ backgroundColor: STORE_COLORS[index % STORE_COLORS.length] }}></span>
+                  <label htmlFor={`store-${index}`} className="ml-2 text-sm text-gray-800 flex items-center cursor-pointer select-none hover:text-indigo-700">
+                    <span className="w-3 h-3 inline-block mr-1 rounded" style={{ backgroundColor: STORE_COLORS[index % STORE_COLORS.length] }}></span>
                     {store.name}
                   </label>
                 </div>
@@ -326,20 +326,20 @@ export default function RetailDashboard() {
                     id={`store-resumen`}
                     checked={selectedStores["Resumen"] || false}
                     onChange={() => handleStoreToggle("Resumen")}
-                    className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                    className="h-4 w-4 text-indigo-600 border-gray-400 rounded-lg focus:ring-indigo-500 transition duration-150 hover:scale-110"
                   />
-                  <label htmlFor={`store-resumen`} className="ml-2 text-sm text-gray-700 flex items-center">
-                    <span className="w-3 h-3 inline-block mr-1" style={{ backgroundColor: "#aec7e8" }}></span>
+                  <label htmlFor={`store-resumen`} className="ml-2 text-sm text-gray-800 flex items-center cursor-pointer select-none hover:text-indigo-700">
+                    <span className="w-3 h-3 inline-block mr-1 rounded" style={{ backgroundColor: "#aec7e8" }}></span>
                     Resumen
                   </label>
                 </div>
               )}
             </div>
           </div>
-          <div className="mb-4 md:mb-0 flex-shrink-0">
+          <div className="mb-6 md:mb-0 flex-shrink-0">
             <button
               onClick={handleCycleChartType}
-              className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition w-full"
+              className="px-5 py-3 bg-indigo-700 text-white rounded-xl hover:bg-indigo-800 transition duration-150 w-full shadow-xl font-semibold text-base focus:outline-none focus:ring-2 focus:ring-indigo-400"
               type="button"
             >
               Cambiar tipo de gráfico
@@ -348,25 +348,25 @@ export default function RetailDashboard() {
         </div>
         {/* Selector de meses con checkboxes */}
         <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-2">Seleccionar Meses:</label>
+          <label className="block text-base font-semibold text-gray-800 mb-3">Seleccionar Meses:</label>
           <div className="flex flex-wrap gap-4">
             {MONTHS_ORDER.map((month, index) => (
-              <label key={index} className="flex items-center">
+              <label key={index} className="flex items-center cursor-pointer hover:text-indigo-700">
                 <input
                   type="checkbox"
                   name="month"
                   value={month}
                   checked={monthsVisible.includes(month)}
                   onChange={() => handleMonthChange(month)}
-                  className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                  className="h-4 w-4 text-indigo-600 border-gray-400 rounded-lg focus:ring-indigo-500 transition duration-150 hover:scale-110"
                 />
-                <span className="ml-2 text-sm text-gray-700">{month}</span>
+                <span className="ml-2 text-sm text-gray-800">{month}</span>
               </label>
             ))}
           </div>
         </div>
       </div>
-      <div className="bg-white p-4 rounded-lg shadow" style={{ height: 450 }} ref={chartContainerRef}>
+      <div className="bg-white p-8 rounded-2xl shadow-2xl border border-gray-200" style={{ height: 450 }} ref={chartContainerRef}>
         <ResponsiveContainer width="100%" height="100%">
           {chartType === 'line' && (
             <LineChart data={chartData} margin={{ top: 25, right: 30, left: 20, bottom: 5 }}>
