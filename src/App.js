@@ -3,6 +3,7 @@ import html2canvas from "html2canvas";
 import './setupGlobals';
 import { generatePPT } from './generatePPT';
 import { initialStoreData } from './storeData';
+import { weeklyStoreData } from './weeklyData';
 import {
   LineChart,
   Line,
@@ -91,12 +92,16 @@ const MONTHS_ORDER = [
   'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
 ];
 
+const WEEKS_ORDER = weeklyStoreData[0].data.map(d => d.week);
+
 
 export default function RetailDashboard() {
+  const [viewMode, setViewMode] = useState('months');
   const [storeData, setStoreData] = useState(initialStoreData);
   const [monthsVisible, setMonthsVisible] = useState([
     'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'
   ]);
+  const [weeksVisible, setWeeksVisible] = useState(WEEKS_ORDER.slice(0, 5));
   const [selectedMetric, setSelectedMetric] = useState('flujo');
   // Estado inicial: todas las tiendas seleccionadas + "Resumen" seleccionada por defecto
   const [selectedStores, setSelectedStores] = useState(() => {
@@ -110,11 +115,13 @@ export default function RetailDashboard() {
   // Nuevo estado para tipo de gráfico
   const [chartType, setChartType] = useState('line');
 
-  const chartData = monthsVisible.map(month => {
-    const obj = { month };
+  const visibleCategories = viewMode === 'months' ? monthsVisible : weeksVisible;
+  const chartData = visibleCategories.map(cat => {
+    const key = viewMode === 'months' ? 'month' : 'week';
+    const obj = { [key]: cat };
     storeData.forEach(store => {
       if (selectedStores[store.name]) {
-        const entry = store.data.find(d => d.month === month);
+        const entry = store.data.find(d => d[key] === cat);
         obj[store.name] = entry ? entry[selectedMetric] : null;
       }
     });
@@ -128,6 +135,16 @@ export default function RetailDashboard() {
         return prevMonths.filter(m => m !== month); // Deselecciona el mes
       } else {
         return [...prevMonths, month]; // Selecciona el mes
+      }
+    });
+  };
+
+  const handleWeekChange = (week) => {
+    setWeeksVisible(prevWeeks => {
+      if (prevWeeks.includes(week)) {
+        return prevWeeks.filter(w => w !== week);
+      } else {
+        return [...prevWeeks, week];
       }
     });
   };
@@ -217,10 +234,37 @@ export default function RetailDashboard() {
     });
   };
 
+  const handleModeChange = (mode) => {
+    setViewMode(mode);
+    setStoreData(mode === 'months' ? initialStoreData : weeklyStoreData);
+  };
+
   return (
     <div className="flex flex-col min-h-screen p-8 bg-gradient-to-br from-indigo-50 via-white to-indigo-100 font-sans">
       <h1 className="text-4xl font-bold mb-8 text-center text-indigo-900 tracking-tight drop-shadow-sm">Dashboard de Evolución de Tiendas - 2025</h1>
       <div className="bg-white p-8 rounded-2xl shadow-2xl mb-10 border border-gray-200">
+        <div className="mb-6 flex gap-4">
+          <button
+            type="button"
+            onClick={() => handleModeChange('months')}
+            className={
+              `px-4 py-2 rounded-lg font-semibold ` +
+              (viewMode === 'months' ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-800')
+            }
+          >
+            Meses
+          </button>
+          <button
+            type="button"
+            onClick={() => handleModeChange('weeks')}
+            className={
+              `px-4 py-2 rounded-lg font-semibold ` +
+              (viewMode === 'weeks' ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-800')
+            }
+          >
+            Semanas
+          </button>
+        </div>
         <div className="flex flex-col md:flex-row md:items-end md:gap-8 mb-8">
           <div className="mb-6 md:mb-0 w-full md:w-1/4">
             <label className="block text-base font-semibold text-gray-800 mb-3">Seleccionar Métrica:</label>
@@ -346,23 +390,38 @@ export default function RetailDashboard() {
             </button>
           </div>
         </div>
-        {/* Selector de meses con checkboxes */}
         <div className="mb-6">
-          <label className="block text-base font-semibold text-gray-800 mb-3">Seleccionar Meses:</label>
+          <label className="block text-base font-semibold text-gray-800 mb-3">
+            {viewMode === 'months' ? 'Seleccionar Meses:' : 'Seleccionar Semanas:'}
+          </label>
           <div className="flex flex-wrap gap-4">
-            {MONTHS_ORDER.map((month, index) => (
-              <label key={index} className="flex items-center cursor-pointer hover:text-indigo-700">
-                <input
-                  type="checkbox"
-                  name="month"
-                  value={month}
-                  checked={monthsVisible.includes(month)}
-                  onChange={() => handleMonthChange(month)}
-                  className="h-4 w-4 text-indigo-600 border-gray-400 rounded-lg focus:ring-indigo-500 transition duration-150 hover:scale-110"
-                />
-                <span className="ml-2 text-sm text-gray-800">{month}</span>
-              </label>
-            ))}
+            {viewMode === 'months'
+              ? MONTHS_ORDER.map((month, index) => (
+                  <label key={index} className="flex items-center cursor-pointer hover:text-indigo-700">
+                    <input
+                      type="checkbox"
+                      name="month"
+                      value={month}
+                      checked={monthsVisible.includes(month)}
+                      onChange={() => handleMonthChange(month)}
+                      className="h-4 w-4 text-indigo-600 border-gray-400 rounded-lg focus:ring-indigo-500 transition duration-150 hover:scale-110"
+                    />
+                    <span className="ml-2 text-sm text-gray-800">{month}</span>
+                  </label>
+                ))
+              : WEEKS_ORDER.map((week, index) => (
+                  <label key={index} className="flex items-center cursor-pointer hover:text-indigo-700">
+                    <input
+                      type="checkbox"
+                      name="week"
+                      value={week}
+                      checked={weeksVisible.includes(week)}
+                      onChange={() => handleWeekChange(week)}
+                      className="h-4 w-4 text-indigo-600 border-gray-400 rounded-lg focus:ring-indigo-500 transition duration-150 hover:scale-110"
+                    />
+                    <span className="ml-2 text-sm text-gray-800">{week}</span>
+                  </label>
+                ))}
           </div>
         </div>
       </div>
@@ -371,7 +430,7 @@ export default function RetailDashboard() {
           {chartType === 'line' && (
             <LineChart data={chartData} margin={{ top: 25, right: 30, left: 20, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
+              <XAxis dataKey={viewMode === 'months' ? 'month' : 'week'} />
               <YAxis
                 label={{
                   value:
@@ -421,7 +480,7 @@ export default function RetailDashboard() {
           {chartType === 'bar' && (
             <BarChart data={chartData} margin={{ top: 30, right: 30, left: 20, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
+              <XAxis dataKey={viewMode === 'months' ? 'month' : 'week'} />
               <YAxis
                 label={{
                   value:
@@ -473,7 +532,7 @@ export default function RetailDashboard() {
           {chartType === 'area' && (
             <AreaChart data={chartData} margin={{ top: 30, right: 30, left: 20, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
+              <XAxis dataKey={viewMode === 'months' ? 'month' : 'week'} />
               <YAxis
                 label={{
                   value:
