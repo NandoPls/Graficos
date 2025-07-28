@@ -1681,8 +1681,13 @@
       "conversion":12.4
     }
   },
-  {
-    "semana": 29,
+    {
+    "semana":30,
+    "manquehue":{
+      "entradas":327,
+      "boletas":158,
+      "conversion":48.3
+    },
     "mallSportSalomon": {
         "entradas": 2370,
         "boletas": 165,
