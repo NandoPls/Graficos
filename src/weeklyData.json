@@ -1682,61 +1682,119 @@
     }
   },
     {
-    "semana":30,
-    "manquehue":{
-      "entradas":327,
-      "boletas":158,
-      "conversion":48.3
+    "semana": 30,
+    "manquehue": {
+        "entradas": 1560,
+        "boletas": 498,
+        "conversion": 31.9
     },
     "mallSportSalomon": {
-        "entradas": 2370,
-        "boletas": 165,
-        "conversion": 7.0
+        "entradas": 11387,
+        "boletas": 870,
+        "conversion": 7.6
     },
     "mallSportWilson": {
-        "entradas": 1493,
-        "boletas": 170,
-        "conversion": 11.4
+        "entradas": 6879,
+        "boletas": 826,
+        "conversion": 12.0
     },
     "beCyclingPadreHurtado": {
-        "entradas": 350,
-        "boletas": 61,
-        "conversion": 17.4
+        "entradas": 1640,
+        "boletas": 234,
+        "conversion": 14.3
     },
     "vinaDelMar": {
-        "entradas": 673,
-        "boletas": 142,
-        "conversion": 21.1
+        "entradas": 2832,
+        "boletas": 513,
+        "conversion": 18.1
     },
     "mallPlazaTrebolSalomon": {
-        "entradas": 1598,
-        "boletas": 84,
-        "conversion": 5.3
+        "entradas": 7610,
+        "boletas": 394,
+        "conversion": 5.2
     },
     "easton": {
-        "entradas": 3649,
-        "boletas": 200,
-        "conversion": 5.5
+        "entradas": 17140,
+        "boletas": 909,
+        "conversion": 5.3
     },
     "costaneraCenterSalomon": {
-        "entradas": 4445,
-        "boletas": 246,
-        "conversion": 5.5
+        "entradas": 18534,
+        "boletas": 1047,
+        "conversion": 5.6
     },
     "puertoMontt": {
-        "entradas": 964,
-        "boletas": 31,
-        "conversion": 3.2
+        "entradas": 4299,
+        "boletas": 154,
+        "conversion": 3.6
     },
     "parqueArauco": {
-        "entradas": 2011,
-        "boletas": 177,
-        "conversion": 8.8
+        "entradas": 8637,
+        "boletas": 712,
+        "conversion": 8.2
     },
     "tiendaArenaMS": {
-        "entradas": 1119,
-        "boletas": 176,
-        "conversion": 15.7
+        "entradas": 4774,
+        "boletas": 639,
+        "conversion": 13.4
     }
-}
+  },
+  {
+    "semana": 31,
+    "manquehue": {
+        "entradas": 72,
+        "boletas": 41,
+        "conversion": 56.9
+    },
+    "mallSportSalomon": {
+        "entradas": 2107,
+        "boletas": 137,
+        "conversion": 6.5
+    },
+    "mallSportWilson": {
+        "entradas": 1067,
+        "boletas": 102,
+        "conversion": 9.6
+    },
+    "beCyclingPadreHurtado": {
+        "entradas": 57,
+        "boletas": 8,
+        "conversion": 14.0
+    },
+    "vinaDelMar": {
+        "entradas": 154,
+        "boletas": 38,
+        "conversion": 24.7
+    },
+    "mallPlazaTrebolSalomon": {
+        "entradas": 1155,
+        "boletas": 74,
+        "conversion": 6.4
+    },
+    "easton": {
+        "entradas": 2285,
+        "boletas": 141,
+        "conversion": 6.2
+    },
+    "costaneraCenterSalomon": {
+        "entradas": 2568,
+        "boletas": 166,
+        "conversion": 6.5
+    },
+    "puertoMontt": {
+        "entradas": 626,
+        "boletas": 40,
+        "conversion": 6.4
+    },
+    "parqueArauco": {
+        "entradas": 1351,
+        "boletas": 114,
+        "conversion": 8.4
+    },
+    "tiendaArenaMS": {
+        "entradas": 867,
+        "boletas": 109,
+        "conversion": 12.6
+    }
+  }
 ]
