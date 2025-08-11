@@ -2,7 +2,7 @@ export const initialStoreData = [
   {
     name: "Manquehue",
     data: [
-      { month: 'Enero', flujo: 1488, boletas: 839, conversion: 56.4 },
+      { month: 'Enero', flujo: 1489, boletas: 839, conversion: 56.4 },
       { month: 'Febrero', flujo: 1164, boletas: 608, conversion: 52.2 },
       { month: 'Marzo', flujo: 1470, boletas: 802, conversion: 54.6 },
       { month: 'Abril', flujo: 1314, boletas: 705, conversion: 53.7 },
