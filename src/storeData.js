@@ -8,21 +8,21 @@ export const initialStoreData = [
       { month: 'Abril', flujo: 1314, boletas: 705, conversion: 53.7 },
       { month: 'Mayo', flujo: 1360, boletas: 730, conversion: 53.7 },
       { month: 'Junio', flujo: 1425, boletas: 759, conversion: 53.3 },
-      { month: 'Julio', flujo: 1360, boletas: 498, conversion: 36.6 }, // Actualizado
-      { month: 'Agosto', flujo: 72, boletas: 41, conversion: 56.9 }
+      { month: 'Julio', flujo: 1560, boletas: 498, conversion: 31.9 },
+      { month: 'Agosto', flujo: 446, boletas: 242, conversion: 54.3 }
     ]
   },
   {
     name: "Mall Sport - Salomon",
     data: [
       { month: 'Enero', flujo: 7096, boletas: 657, conversion: 9.3 },
-      { month: 'F ebrero', flujo: 6091, boletas: 477, conversion: 7.8 },
+      { month: 'Febrero', flujo: 6091, boletas: 477, conversion: 7.8 },
       { month: 'Marzo', flujo: 7060, boletas: 531, conversion: 7.5 },
       { month: 'Abril', flujo: 6333, boletas: 547, conversion: 8.6 },
       { month: 'Mayo', flujo: 7702, boletas: 529, conversion: 6.9 },
       { month: 'Junio', flujo: 11410, boletas: 943, conversion: 8.3 },
-      { month: 'Julio', flujo: 10373, boletas: 782, conversion: 7.5 }, // Actualizado
-      { month: 'Agosto', flujo: 2107, boletas: 137, conversion: 6.5 }
+      { month: 'Julio', flujo: 11387, boletas: 870, conversion: 7.6 },
+      { month: 'Agosto', flujo: 4636, boletas: 364, conversion: 7.9 }
     ]
   },
   {
@@ -34,8 +34,8 @@ export const initialStoreData = [
       { month: 'Abril', flujo: 6308, boletas: 900, conversion: 14.3 },
       { month: 'Mayo', flujo: 6789, boletas: 864, conversion: 12.7 },
       { month: 'Junio', flujo: 6543, boletas: 770, conversion: 11.8 },
-      { month: 'Julio', flujo: 6279, boletas: 749, conversion: 11.9 }, // Actualizado
-      { month: 'Agosto', flujo: 1067, boletas: 102, conversion: 9.6 }
+      { month: 'Julio', flujo: 6879, boletas: 826, conversion: 12.0 },
+      { month: 'Agosto', flujo: 2582, boletas: 330, conversion: 12.8 }
     ]
   },
   {
@@ -47,8 +47,8 @@ export const initialStoreData = [
       { month: 'Abril', flujo: 1690, boletas: 238, conversion: 14.1 },
       { month: 'Mayo', flujo: 1435, boletas: 190, conversion: 13.2 },
       { month: 'Junio', flujo: 1567, boletas: 211, conversion: 13.5 },
-      { month: 'Julio', flujo: 1416, boletas: 190, conversion: 13.4 }, // Actualizado
-      { month: 'Agosto', flujo: 57, boletas: 8, conversion: 14.0 }
+      { month: 'Julio', flujo: 1640, boletas: 234, conversion: 14.3 },
+      { month: 'Agosto', flujo: 428, boletas: 71, conversion: 16.6 }
     ]
   },
   {
@@ -60,8 +60,8 @@ export const initialStoreData = [
       { month: 'Abril', flujo: 3528, boletas: 539, conversion: 15.3 },
       { month: 'Mayo', flujo: 2984, boletas: 543, conversion: 18.2 },
       { month: 'Junio', flujo: 2865, boletas: 528, conversion: 18.4 },
-      { month: 'Julio', flujo: 2545, boletas: 468, conversion: 18.4 }, // Actualizado
-      { month: 'Agosto', flujo: 154, boletas: 38, conversion: 24.7 }
+      { month: 'Julio', flujo: 2832, boletas: 513, conversion: 18.1 },
+      { month: 'Agosto', flujo: 839, boletas: 144, conversion: 17.2 }
     ]
   },
   {
@@ -73,8 +73,8 @@ export const initialStoreData = [
       { month: 'Abril', flujo: 7562, boletas: 325, conversion: 4.3 },
       { month: 'Mayo', flujo: 8589, boletas: 370, conversion: 4.3 },
       { month: 'Junio', flujo: 8852, boletas: 476, conversion: 5.4 },
-      { month: 'Julio', flujo: 7048, boletas: 356, conversion: 5.1 }, // Actualizado
-      { month: 'Agosto', flujo: 1155, boletas: 74, conversion: 6.4 }
+      { month: 'Julio', flujo: 7610, boletas: 394, conversion: 5.2 },
+      { month: 'Agosto', flujo: 2657, boletas: 161, conversion: 6.1 }
     ]
   },
   {
@@ -86,8 +86,8 @@ export const initialStoreData = [
       { month: 'Abril', flujo: 18631, boletas: 1104, conversion: 5.9 },
       { month: 'Mayo', flujo: 18093, boletas: 1044, conversion: 5.8 },
       { month: 'Junio', flujo: 15034, boletas: 849, conversion: 5.6 },
-      { month: 'Julio', flujo: 15787, boletas: 813, conversion: 5.1 }, // Actualizado
-      { month: 'Agosto', flujo: 2285, boletas: 141, conversion: 6.2 }
+      { month: 'Julio', flujo: 17140, boletas: 909, conversion: 5.3 },
+      { month: 'Agosto', flujo: 5612, boletas: 363, conversion: 6.5 }
     ]
   },
   {
@@ -99,8 +99,8 @@ export const initialStoreData = [
       { month: 'Abril', flujo: 15972, boletas: 911, conversion: 5.7 },
       { month: 'Mayo', flujo: 16708, boletas: 838, conversion: 5.0 },
       { month: 'Junio', flujo: 16689, boletas: 982, conversion: 5.9 },
-      { month: 'Julio', flujo: 16588, boletas: 909, conversion: 5.5 }, // Actualizado
-      { month: 'Agosto', flujo: 2568, boletas: 166, conversion: 6.5 }
+      { month: 'Julio', flujo: 18534, boletas: 1047, conversion: 5.6 },
+      { month: 'Agosto', flujo: 6584, boletas: 397, conversion: 6.0 }
     ]
   },
   {
@@ -112,8 +112,8 @@ export const initialStoreData = [
       { month: 'Abril', flujo: 6171, boletas: 242, conversion: 3.9 },
       { month: 'Mayo', flujo: 5495, boletas: 276, conversion: 5.0 },
       { month: 'Junio', flujo: 5047, boletas: 240, conversion: 4.8 },
-      { month: 'Julio', flujo: 3924, boletas: 137, conversion: 3.5 }, // Actualizado
-      { month: 'Agosto', flujo: 626, boletas: 40, conversion: 6.4 }
+      { month: 'Julio', flujo: 4299, boletas: 154, conversion: 3.6 },
+      { month: 'Agosto', flujo: 1573, boletas: 98, conversion: 6.2 }
     ]
   },
   {
@@ -125,8 +125,8 @@ export const initialStoreData = [
       { month: 'Abril', flujo: 5529, boletas: 566, conversion: 10.2 },
       { month: 'Mayo', flujo: 6970, boletas: 607, conversion: 8.7 },
       { month: 'Junio', flujo: 7598, boletas: 706, conversion: 9.3 },
-      { month: 'Julio', flujo: 7765, boletas: 635, conversion: 8.2 }, // Actualizado
-      { month: 'Agosto', flujo: 1351, boletas: 114, conversion: 8.4 }
+      { month: 'Julio', flujo: 8637, boletas: 712, conversion: 8.2 },
+      { month: 'Agosto', flujo: 3079, boletas: 271, conversion: 8.8 }
     ]
   },
   {
@@ -138,8 +138,8 @@ export const initialStoreData = [
       { month: 'Abril', flujo: 4031, boletas: 549, conversion: 13.6 },
       { month: 'Mayo', flujo: 5015, boletas: 806, conversion: 16.1 },
       { month: 'Junio', flujo: 4248, boletas: 610, conversion: 14.4 },
-      { month: 'Julio', flujo: 4335, boletas: 592, conversion: 13.7 }, // Actualizado
-      { month: 'Agosto', flujo: 867, boletas: 109, conversion: 12.6 }
+      { month: 'Julio', flujo: 4774, boletas: 639, conversion: 13.4 },
+      { month: 'Agosto', flujo: 1949, boletas: 258, conversion: 13.2 }
     ]
   },
   {
@@ -151,8 +151,8 @@ export const initialStoreData = [
       { month: 'Abril', flujo: 77069, boletas: 6626, conversion: 8.60 },
       { month: 'Mayo', flujo: 81140, boletas: 6797, conversion: 8.38 },
       { month: 'Junio', flujo: 81278, boletas: 7074, conversion: 8.7 },
-      { month: 'Julio', flujo: 77420, boletas: 6129, conversion: 7.92 }, // Actualizado (TOTAL de la imagen)
-      { month: 'Agosto', flujo: 12309, boletas: 970, conversion: 7.88 }
+      { month: 'Julio', flujo: 85292, boletas: 6796, conversion: 7.97 },
+      { month: 'Agosto', flujo: 30385, boletas: 2699, conversion: 8.88 }
     ]
   }
 ];
