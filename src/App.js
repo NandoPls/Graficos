@@ -2,8 +2,7 @@ import React, { useState, useRef } from 'react';
 import html2canvas from "html2canvas";
 import './setupGlobals';
 import { generatePPT } from './generatePPT';
-import { initialStoreData } from './storeData';
-import { weeklyStoreData } from './weeklyData';
+import { generateDateBasedComparisonFromWeekly, generateWeeklyDataFromDaily, generateMonthlyDataFromDaily, dataMetadata } from './dailyDataProcessor';
 import {
   LineChart,
   Line,
@@ -92,7 +91,12 @@ const MONTHS_ORDER = [
   'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
 ];
 
+// Generar datos dinámicamente desde datos diarios
+const weeklyStoreData = generateWeeklyDataFromDaily();
+const initialStoreData = generateMonthlyDataFromDaily();
+
 const WEEKS_ORDER = weeklyStoreData[0].data.map(d => d.week);
+
 
 
 export default function RetailDashboard() {
@@ -103,6 +107,12 @@ export default function RetailDashboard() {
   ]);
   const [weeksVisible, setWeeksVisible] = useState(WEEKS_ORDER.slice(0, 5));
   const [selectedMetric, setSelectedMetric] = useState('flujo');
+  // Estado para comparación mensual por fechas exactas
+  const [cutoffDay, setCutoffDay] = useState(25); // Día 25
+  const [cutoffMonth, setCutoffMonth] = useState(8); // Agosto
+  const [selectedMonthsComparison, setSelectedMonthsComparison] = useState([
+    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto'
+  ]);
   // Estado inicial: todas las tiendas seleccionadas + "Resumen" seleccionada por defecto
   const [selectedStores, setSelectedStores] = useState(() => {
     const acc = initialStoreData.reduce((acc, store) => {
@@ -115,18 +125,33 @@ export default function RetailDashboard() {
   // Nuevo estado para tipo de gráfico
   const [chartType, setChartType] = useState('line');
 
-  const visibleCategories = viewMode === 'months' ? monthsVisible : weeksVisible;
-  const chartData = visibleCategories.map(cat => {
-    const key = viewMode === 'months' ? 'month' : 'week';
-    const obj = { [key]: cat };
-    storeData.forEach(store => {
-      if (selectedStores[store.name]) {
-        const entry = store.data.find(d => d[key] === cat);
-        obj[store.name] = entry ? entry[selectedMetric] : null;
-      }
+  // Lógica de datos para el gráfico según el modo
+  let chartData;
+  let visibleCategories;
+  
+  if (viewMode === 'monthlyComparison') {
+    // Modo de comparación mensual hasta fecha límite exacta
+    const allComparisonData = generateDateBasedComparisonFromWeekly(
+      weeklyStoreData, cutoffDay, cutoffMonth, selectedStores, selectedMetric
+    );
+    // Filtrar solo los meses seleccionados
+    chartData = allComparisonData.filter(data => selectedMonthsComparison.includes(data.month));
+    visibleCategories = chartData.map(d => d.month);
+  } else {
+    // Modos existentes (months y weeks)
+    visibleCategories = viewMode === 'months' ? monthsVisible : weeksVisible;
+    chartData = visibleCategories.map(cat => {
+      const key = viewMode === 'months' ? 'month' : 'week';
+      const obj = { [key]: cat };
+      storeData.forEach(store => {
+        if (selectedStores[store.name]) {
+          const entry = store.data.find(d => d[key] === cat);
+          obj[store.name] = entry ? entry[selectedMetric] : null;
+        }
+      });
+      return obj;
     });
-    return obj;
-  });
+  }
 
   // Definir handleMonthChange aquí para cambiar la selección de meses
   const handleMonthChange = (month) => {
@@ -236,12 +261,38 @@ export default function RetailDashboard() {
 
   const handleModeChange = (mode) => {
     setViewMode(mode);
-    setStoreData(mode === 'months' ? initialStoreData : weeklyStoreData);
+    if (mode === 'monthlyComparison') {
+      setStoreData(weeklyStoreData);
+    } else {
+      setStoreData(mode === 'months' ? initialStoreData : weeklyStoreData);
+    }
+  };
+
+  const handleMonthComparisonToggle = (month) => {
+    setSelectedMonthsComparison(prev => {
+      if (prev.includes(month)) {
+        return prev.filter(m => m !== month);
+      } else {
+        return [...prev, month];
+      }
+    });
+  };
+
+  const getCurrentMonthName = () => {
+    const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto'];
+    return months[cutoffMonth - 1];
   };
 
   return (
     <div className="flex flex-col min-h-screen p-8 bg-gradient-to-br from-indigo-50 via-white to-indigo-100 font-sans">
-      <h1 className="text-4xl font-bold mb-8 text-center text-indigo-900 tracking-tight drop-shadow-sm">Dashboard de Evolución de Tiendas - 2025</h1>
+      <div className="text-center mb-8">
+        <h1 className="text-4xl font-bold text-indigo-900 tracking-tight drop-shadow-sm">Dashboard de Evolución de Tiendas - 2025</h1>
+        {dataMetadata && (
+          <p className="text-sm text-gray-600 mt-2">
+            📊 Última actualización: {dataMetadata.updateDate} | {dataMetadata.recordsProcessed} registros
+          </p>
+        )}
+      </div>
       <div className="bg-white p-8 rounded-2xl shadow-2xl mb-10 border border-gray-200">
         <div className="mb-6 flex gap-4">
           <button
@@ -263,6 +314,16 @@ export default function RetailDashboard() {
             }
           >
             Semanas
+          </button>
+          <button
+            type="button"
+            onClick={() => handleModeChange('monthlyComparison')}
+            className={
+              `px-4 py-2 rounded-lg font-semibold ` +
+              (viewMode === 'monthlyComparison' ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-800')
+            }
+          >
+            Comparación Mensual
           </button>
         </div>
         <div className="flex flex-col md:flex-row md:items-end md:gap-8 mb-8">
@@ -390,9 +451,60 @@ export default function RetailDashboard() {
             </button>
           </div>
         </div>
+        
+        {/* Selector de fecha límite para comparación mensual */}
+        {viewMode === 'monthlyComparison' && (
+          <div className="mb-6">
+            <label className="block text-base font-semibold text-gray-800 mb-3">
+              Comparar hasta el día: {cutoffDay} de {getCurrentMonthName()}
+            </label>
+            <div className="flex gap-4 items-center">
+              <div className="flex-1">
+                <label className="block text-sm text-gray-600 mb-1">Día:</label>
+                <input
+                  type="range"
+                  min="1"
+                  max="31"
+                  value={cutoffDay}
+                  onChange={(e) => setCutoffDay(parseInt(e.target.value))}
+                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                />
+                <div className="flex justify-between text-xs text-gray-500 mt-1">
+                  <span>1</span>
+                  <span>31</span>
+                </div>
+              </div>
+              <div className="w-32">
+                <label className="block text-sm text-gray-600 mb-1">Mes:</label>
+                <select
+                  value={cutoffMonth}
+                  onChange={(e) => setCutoffMonth(parseInt(e.target.value))}
+                  className="w-full p-2 border border-gray-300 rounded-lg text-sm"
+                >
+                  <option value={1}>Enero</option>
+                  <option value={2}>Febrero</option>
+                  <option value={3}>Marzo</option>
+                  <option value={4}>Abril</option>
+                  <option value={5}>Mayo</option>
+                  <option value={6}>Junio</option>
+                  <option value={7}>Julio</option>
+                  <option value={8}>Agosto</option>
+                </select>
+              </div>
+            </div>
+            <p className="text-sm text-blue-600 mt-2">
+              🗓️ Comparando cada mes hasta el {cutoffDay} de {getCurrentMonthName().toLowerCase()}
+            </p>
+          </div>
+        )}
+        
         <div className="mb-6">
           <label className="block text-base font-semibold text-gray-800 mb-3">
-            {viewMode === 'months' ? 'Seleccionar Meses:' : 'Seleccionar Semanas:'}
+            {viewMode === 'months' 
+              ? 'Seleccionar Meses:' 
+              : viewMode === 'weeks' 
+                ? 'Seleccionar Semanas:'
+                : 'Meses a comparar:'}
           </label>
           <div className="flex flex-wrap gap-4">
             {viewMode === 'months'
@@ -409,19 +521,33 @@ export default function RetailDashboard() {
                     <span className="ml-2 text-sm text-gray-800">{month}</span>
                   </label>
                 ))
-              : WEEKS_ORDER.map((week, index) => (
-                  <label key={index} className="flex items-center cursor-pointer hover:text-indigo-700">
-                    <input
-                      type="checkbox"
-                      name="week"
-                      value={week}
-                      checked={weeksVisible.includes(week)}
-                      onChange={() => handleWeekChange(week)}
-                      className="h-4 w-4 text-indigo-600 border-gray-400 rounded-lg focus:ring-indigo-500 transition duration-150 hover:scale-110"
-                    />
-                    <span className="ml-2 text-sm text-gray-800">{week}</span>
-                  </label>
-                ))}
+              : viewMode === 'weeks'
+                ? WEEKS_ORDER.map((week, index) => (
+                    <label key={index} className="flex items-center cursor-pointer hover:text-indigo-700">
+                      <input
+                        type="checkbox"
+                        name="week"
+                        value={week}
+                        checked={weeksVisible.includes(week)}
+                        onChange={() => handleWeekChange(week)}
+                        className="h-4 w-4 text-indigo-600 border-gray-400 rounded-lg focus:ring-indigo-500 transition duration-150 hover:scale-110"
+                      />
+                      <span className="ml-2 text-sm text-gray-800">{week}</span>
+                    </label>
+                  ))
+                : // Modo de comparación mensual - checkboxes para seleccionar meses
+                  MONTHS_ORDER.slice(0, 8).map((month, index) => (
+                    <label key={index} className="flex items-center cursor-pointer hover:text-indigo-700">
+                      <input
+                        type="checkbox"
+                        checked={selectedMonthsComparison.includes(month)}
+                        onChange={() => handleMonthComparisonToggle(month)}
+                        className="h-4 w-4 text-indigo-600 border-gray-400 rounded-lg focus:ring-indigo-500 transition duration-150 hover:scale-110"
+                      />
+                      <span className="ml-2 text-sm text-gray-800">{month}</span>
+                    </label>
+                  ))
+            }
           </div>
         </div>
       </div>
@@ -430,7 +556,7 @@ export default function RetailDashboard() {
           {chartType === 'line' && (
             <LineChart data={chartData} margin={{ top: 25, right: 30, left: 20, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey={viewMode === 'months' ? 'month' : 'week'} />
+              <XAxis dataKey={viewMode === 'months' || viewMode === 'monthlyComparison' ? 'month' : 'week'} />
               <YAxis
                 label={{
                   value:
@@ -480,7 +606,7 @@ export default function RetailDashboard() {
           {chartType === 'bar' && (
             <BarChart data={chartData} margin={{ top: 30, right: 30, left: 20, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey={viewMode === 'months' ? 'month' : 'week'} />
+              <XAxis dataKey={viewMode === 'months' || viewMode === 'monthlyComparison' ? 'month' : 'week'} />
               <YAxis
                 label={{
                   value:
@@ -532,7 +658,7 @@ export default function RetailDashboard() {
           {chartType === 'area' && (
             <AreaChart data={chartData} margin={{ top: 30, right: 30, left: 20, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey={viewMode === 'months' ? 'month' : 'week'} />
+              <XAxis dataKey={viewMode === 'months' || viewMode === 'monthlyComparison' ? 'month' : 'week'} />
               <YAxis
                 label={{
                   value:

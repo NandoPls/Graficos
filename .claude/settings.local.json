@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python:*)",
+      "Bash(node:*)",
+      "Bash(grep:*)",
+      "Bash(rm:*)",
+      "Bash(npm run update-data:*)",
+      "Bash(git add:*)"
+    ],
+    "defaultMode": "acceptEdits",
+    "additionalDirectories": [
+      "C:\\c\\Users\\Nandy"
+    ]
+  }
+}
