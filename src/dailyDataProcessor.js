@@ -56,24 +56,27 @@ export function generateWeeklyDataFromDaily() {
     });
   });
 
-  // Agregar resumen
+  // Agregar resumen (suma de TODAS las tiendas, sin importar selección)
   const summaryData = [];
   for (let week = 1; week <= 35; week++) {
     let totalFlujo = 0;
     let totalBoletas = 0;
     
+    // Usar TODAS las tiendas para el resumen, sin importar selección
     stores.forEach(store => {
-      totalFlujo += store.data[week - 1].flujo;
-      totalBoletas += store.data[week - 1].boletas;
+      const weekData = store.data[week - 1];
+      totalFlujo += weekData.flujo;
+      totalBoletas += weekData.boletas;
     });
     
-    const conversion = totalFlujo > 0 ? parseFloat(((totalBoletas / totalFlujo) * 100).toFixed(1)) : 0;
+    // Conversión calculada desde los totales: (total boletas / total flujo) * 100
+    const totalConversion = totalFlujo > 0 ? parseFloat(((totalBoletas / totalFlujo) * 100).toFixed(1)) : 0;
     
     summaryData.push({
       week: `Semana ${week}`,
       flujo: totalFlujo,
       boletas: totalBoletas,
-      conversion: conversion
+      conversion: totalConversion
     });
   }
   
@@ -116,6 +119,39 @@ export function generateMonthlyDataFromDaily() {
       name: storeName,
       data: storeMonths
     });
+  });
+
+  // Agregar resumen (suma de todas las tiendas)
+  const summaryData = [];
+
+  monthNames.forEach((monthName, monthIndex) => {
+    const monthNumber = monthIndex + 1;
+    let totalFlujo = 0;
+    let totalBoletas = 0;
+
+    // Sumar datos de TODAS las tiendas para este mes, sin importar selección
+    stores.forEach(store => {
+      const monthData = store.data.find(d => d.month === monthName);
+      if (monthData && (monthData.flujo > 0 || monthData.boletas > 0)) {
+        totalFlujo += monthData.flujo;
+        totalBoletas += monthData.boletas;
+      }
+    });
+
+    // Calcular conversión desde los totales: (total boletas / total flujo) * 100
+    const totalConversion = totalFlujo > 0 ? parseFloat(((totalBoletas / totalFlujo) * 100).toFixed(1)) : 0;
+
+    summaryData.push({
+      month: monthName,
+      flujo: totalFlujo,
+      boletas: totalBoletas,
+      conversion: totalConversion
+    });
+  });
+
+  stores.push({
+    name: 'Resumen',
+    data: summaryData
   });
 
   return stores;
@@ -173,7 +209,7 @@ export function generateDateBasedComparisonFromWeekly(weeklyData, cutoffDay, cut
     
     // Para cada tienda seleccionada
     Object.keys(selectedStores).forEach(storeName => {
-      if (selectedStores[storeName] && csvData[storeName] && csvData[storeName][monthNumber]) {
+      if (selectedStores[storeName] && storeName !== 'Resumen' && csvData[storeName] && csvData[storeName][monthNumber]) {
         let totalFlujo = 0;
         let totalBoletas = 0;
         
@@ -197,6 +233,36 @@ export function generateDateBasedComparisonFromWeekly(weeklyData, cutoffDay, cut
     });
   });
   
+  // Agregar Resumen para comparación mensual - SIEMPRE incluye TODAS las tiendas
+  monthNames.forEach((monthName, monthIndex) => {
+    const monthNumber = monthIndex + 1;
+    let totalFlujo = 0;
+    let totalBoletas = 0;
+
+    // Calcular resumen con TODAS las tiendas, sin importar selección
+    Object.keys(csvData).forEach(storeName => {
+      if (csvData[storeName][monthNumber]) {
+        // Sumar todos los días del 1 hasta cutoffDay para este mes
+        for (let day = 1; day <= cutoffDay; day++) {
+          const dayData = csvData[storeName][monthNumber][day];
+          if (dayData) {
+            totalFlujo += dayData.flujo;
+            totalBoletas += dayData.boletas;
+          }
+        }
+      }
+    });
+
+    // Conversión calculada desde los totales: (total boletas / total flujo) * 100
+    const totalConversion = totalFlujo > 0 ? parseFloat(((totalBoletas / totalFlujo) * 100).toFixed(1)) : 0;
+
+    monthlyTotals[monthName]['Resumen'] = {
+      flujo: totalFlujo,
+      boletas: totalBoletas,
+      conversion: totalConversion
+    };
+  });
+
   // Convertir a formato para el gráfico
   return Object.keys(monthlyTotals)
     .filter(month => Object.keys(monthlyTotals[month]).length > 0)

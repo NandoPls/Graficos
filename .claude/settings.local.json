@@ -6,7 +6,8 @@
       "Bash(grep:*)",
       "Bash(rm:*)",
       "Bash(npm run update-data:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git push:*)"
     ],
     "defaultMode": "acceptEdits",
     "additionalDirectories": [
