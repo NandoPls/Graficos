@@ -981,7 +981,32 @@
           "boletas": 0
         }
       },
-      "9": {},
+      "9": {
+        "1": {
+          "flujo": 66,
+          "boletas": 36
+        },
+        "2": {
+          "flujo": 48,
+          "boletas": 29
+        },
+        "3": {
+          "flujo": 60,
+          "boletas": 36
+        },
+        "4": {
+          "flujo": 45,
+          "boletas": 24
+        },
+        "5": {
+          "flujo": 75,
+          "boletas": 42
+        },
+        "6": {
+          "flujo": 28,
+          "boletas": 22
+        }
+      },
       "10": {},
       "11": {},
       "12": {}
@@ -1971,7 +1996,36 @@
           "boletas": 33
         }
       },
-      "9": {},
+      "9": {
+        "1": {
+          "flujo": 194,
+          "boletas": 23
+        },
+        "2": {
+          "flujo": 224,
+          "boletas": 29
+        },
+        "3": {
+          "flujo": 218,
+          "boletas": 26
+        },
+        "4": {
+          "flujo": 207,
+          "boletas": 19
+        },
+        "5": {
+          "flujo": 314,
+          "boletas": 33
+        },
+        "6": {
+          "flujo": 628,
+          "boletas": 79
+        },
+        "7": {
+          "flujo": 640,
+          "boletas": 75
+        }
+      },
       "10": {},
       "11": {},
       "12": {}
@@ -2961,7 +3015,36 @@
           "boletas": 42
         }
       },
-      "9": {},
+      "9": {
+        "1": {
+          "flujo": 137,
+          "boletas": 25
+        },
+        "2": {
+          "flujo": 153,
+          "boletas": 28
+        },
+        "3": {
+          "flujo": 98,
+          "boletas": 14
+        },
+        "4": {
+          "flujo": 113,
+          "boletas": 17
+        },
+        "5": {
+          "flujo": 236,
+          "boletas": 26
+        },
+        "6": {
+          "flujo": 317,
+          "boletas": 41
+        },
+        "7": {
+          "flujo": 269,
+          "boletas": 19
+        }
+      },
       "10": {},
       "11": {},
       "12": {}
@@ -3943,7 +4026,28 @@
           "boletas": 0
         }
       },
-      "9": {},
+      "9": {
+        "1": {
+          "flujo": 86,
+          "boletas": 10
+        },
+        "2": {
+          "flujo": 77,
+          "boletas": 5
+        },
+        "3": {
+          "flujo": 69,
+          "boletas": 6
+        },
+        "4": {
+          "flujo": 123,
+          "boletas": 5
+        },
+        "5": {
+          "flujo": 85,
+          "boletas": 8
+        }
+      },
       "10": {},
       "11": {},
       "12": {}
@@ -4917,7 +5021,128 @@
           "boletas": 0
         }
       },
-      "9": {},
+      "9": {
+        "1": {
+          "flujo": 114,
+          "boletas": 20
+        },
+        "2": {
+          "flujo": 123,
+          "boletas": 18
+        },
+        "3": {
+          "flujo": 94,
+          "boletas": 21
+        },
+        "4": {
+          "flujo": 134,
+          "boletas": 22
+        },
+        "5": {
+          "flujo": 137,
+          "boletas": 23
+        },
+        "6": {
+          "flujo": 76,
+          "boletas": 17
+        },
+        "7": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "8": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "9": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "10": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "11": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "12": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "13": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "14": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "15": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "16": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "17": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "18": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "19": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "20": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "21": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "22": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "23": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "24": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "25": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "26": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "27": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "28": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "29": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "30": {
+          "flujo": 0,
+          "boletas": 0
+        }
+      },
       "10": {},
       "11": {},
       "12": {}
@@ -5907,7 +6132,36 @@
           "boletas": 17
         }
       },
-      "9": {},
+      "9": {
+        "1": {
+          "flujo": 154,
+          "boletas": 9
+        },
+        "2": {
+          "flujo": 136,
+          "boletas": 7
+        },
+        "3": {
+          "flujo": 182,
+          "boletas": 8
+        },
+        "4": {
+          "flujo": 126,
+          "boletas": 8
+        },
+        "5": {
+          "flujo": 209,
+          "boletas": 9
+        },
+        "6": {
+          "flujo": 427,
+          "boletas": 25
+        },
+        "7": {
+          "flujo": 330,
+          "boletas": 17
+        }
+      },
       "10": {},
       "11": {},
       "12": {}
@@ -6897,7 +7151,128 @@
           "boletas": 64
         }
       },
-      "9": {},
+      "9": {
+        "1": {
+          "flujo": 297,
+          "boletas": 24
+        },
+        "2": {
+          "flujo": 306,
+          "boletas": 22
+        },
+        "3": {
+          "flujo": 262,
+          "boletas": 29
+        },
+        "4": {
+          "flujo": 297,
+          "boletas": 34
+        },
+        "5": {
+          "flujo": 328,
+          "boletas": 25
+        },
+        "6": {
+          "flujo": 965,
+          "boletas": 59
+        },
+        "7": {
+          "flujo": 820,
+          "boletas": 43
+        },
+        "8": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "9": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "10": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "11": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "12": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "13": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "14": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "15": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "16": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "17": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "18": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "19": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "20": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "21": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "22": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "23": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "24": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "25": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "26": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "27": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "28": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "29": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "30": {
+          "flujo": 0,
+          "boletas": 0
+        }
+      },
       "10": {},
       "11": {},
       "12": {}
@@ -7887,7 +8262,124 @@
           "boletas": 49
         }
       },
-      "9": {},
+      "9": {
+        "1": {
+          "flujo": 460,
+          "boletas": 36
+        },
+        "2": {
+          "flujo": 440,
+          "boletas": 35
+        },
+        "3": {
+          "flujo": 455,
+          "boletas": 31
+        },
+        "4": {
+          "flujo": 487,
+          "boletas": 33
+        },
+        "5": {
+          "flujo": 540,
+          "boletas": 52
+        },
+        "6": {
+          "flujo": 1089,
+          "boletas": 109
+        },
+        "7": {
+          "flujo": 933,
+          "boletas": 60
+        },
+        "9": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "10": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "11": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "12": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "13": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "14": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "15": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "16": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "17": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "18": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "19": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "20": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "21": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "22": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "23": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "24": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "25": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "26": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "27": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "28": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "29": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "30": {
+          "flujo": 0,
+          "boletas": 0
+        }
+      },
       "10": {},
       "11": {},
       "12": {}
@@ -8877,7 +9369,128 @@
           "boletas": 7
         }
       },
-      "9": {},
+      "9": {
+        "1": {
+          "flujo": 108,
+          "boletas": 7
+        },
+        "2": {
+          "flujo": 74,
+          "boletas": 3
+        },
+        "3": {
+          "flujo": 98,
+          "boletas": 6
+        },
+        "4": {
+          "flujo": 112,
+          "boletas": 6
+        },
+        "5": {
+          "flujo": 136,
+          "boletas": 9
+        },
+        "6": {
+          "flujo": 180,
+          "boletas": 9
+        },
+        "7": {
+          "flujo": 228,
+          "boletas": 11
+        },
+        "8": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "9": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "10": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "11": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "12": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "13": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "14": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "15": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "16": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "17": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "18": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "19": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "20": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "21": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "22": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "23": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "24": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "25": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "26": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "27": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "28": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "29": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "30": {
+          "flujo": 0,
+          "boletas": 0
+        }
+      },
       "10": {},
       "11": {},
       "12": {}
@@ -9867,7 +10480,128 @@
           "boletas": 42
         }
       },
-      "9": {},
+      "9": {
+        "1": {
+          "flujo": 167,
+          "boletas": 17
+        },
+        "2": {
+          "flujo": 167,
+          "boletas": 12
+        },
+        "3": {
+          "flujo": 123,
+          "boletas": 18
+        },
+        "4": {
+          "flujo": 195,
+          "boletas": 23
+        },
+        "5": {
+          "flujo": 209,
+          "boletas": 15
+        },
+        "6": {
+          "flujo": 399,
+          "boletas": 35
+        },
+        "7": {
+          "flujo": 424,
+          "boletas": 38
+        },
+        "8": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "9": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "10": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "11": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "12": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "13": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "14": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "15": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "16": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "17": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "18": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "19": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "20": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "21": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "22": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "23": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "24": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "25": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "26": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "27": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "28": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "29": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "30": {
+          "flujo": 0,
+          "boletas": 0
+        }
+      },
       "10": {},
       "11": {},
       "12": {}
@@ -10857,15 +11591,136 @@
           "boletas": 22
         }
       },
-      "9": {},
+      "9": {
+        "1": {
+          "flujo": 110,
+          "boletas": 18
+        },
+        "2": {
+          "flujo": 72,
+          "boletas": 11
+        },
+        "3": {
+          "flujo": 97,
+          "boletas": 21
+        },
+        "4": {
+          "flujo": 84,
+          "boletas": 17
+        },
+        "5": {
+          "flujo": 142,
+          "boletas": 21
+        },
+        "6": {
+          "flujo": 308,
+          "boletas": 37
+        },
+        "7": {
+          "flujo": 247,
+          "boletas": 29
+        },
+        "8": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "9": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "10": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "11": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "12": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "13": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "14": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "15": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "16": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "17": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "18": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "19": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "20": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "21": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "22": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "23": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "24": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "25": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "26": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "27": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "28": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "29": {
+          "flujo": 0,
+          "boletas": 0
+        },
+        "30": {
+          "flujo": 0,
+          "boletas": 0
+        }
+      },
       "10": {},
       "11": {},
       "12": {}
     }
   },
   "metadata": {
-    "lastUpdated": "2025-09-01T02:31:20.744Z",
-    "recordsProcessed": 2655,
-    "updateDate": "31-08-2025"
+    "lastUpdated": "2025-09-07T23:56:03.919Z",
+    "recordsProcessed": 2866,
+    "updateDate": "07-09-2025"
   }
 }
