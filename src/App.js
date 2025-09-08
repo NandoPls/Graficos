@@ -111,7 +111,7 @@ export default function RetailDashboard() {
   const [cutoffDay, setCutoffDay] = useState(25); // Día 25
   const [cutoffMonth, setCutoffMonth] = useState(8); // Agosto
   const [selectedMonthsComparison, setSelectedMonthsComparison] = useState([
-    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto'
+    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre'
   ]);
   // Estado inicial: todas las tiendas seleccionadas + "Resumen" seleccionada por defecto
   const [selectedStores, setSelectedStores] = useState(() => {
@@ -279,7 +279,7 @@ export default function RetailDashboard() {
   };
 
   const getCurrentMonthName = () => {
-    const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto'];
+    const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre'];
     return months[cutoffMonth - 1];
   };
 
@@ -489,6 +489,7 @@ export default function RetailDashboard() {
                   <option value={6}>Junio</option>
                   <option value={7}>Julio</option>
                   <option value={8}>Agosto</option>
+                  <option value={9}>Septiembre</option>
                 </select>
               </div>
             </div>
@@ -536,7 +537,7 @@ export default function RetailDashboard() {
                     </label>
                   ))
                 : // Modo de comparación mensual - checkboxes para seleccionar meses
-                  MONTHS_ORDER.slice(0, 8).map((month, index) => (
+                  MONTHS_ORDER.slice(0, 9).map((month, index) => (
                     <label key={index} className="flex items-center cursor-pointer hover:text-indigo-700">
                       <input
                         type="checkbox"
