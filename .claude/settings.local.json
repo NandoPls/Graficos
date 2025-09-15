@@ -10,7 +10,8 @@
       "Bash(git push:*)",
       "Bash(cat:*)",
       "Bash(git commit:*)",
-      "Bash(git pull:*)"
+      "Bash(git pull:*)",
+      "Bash(npm start)"
     ],
     "defaultMode": "acceptEdits",
     "additionalDirectories": [
