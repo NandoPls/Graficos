@@ -1041,6 +1041,30 @@
         "17": {
           "flujo": 34,
           "boletas": 20
+        },
+        "22": {
+          "flujo": 66,
+          "boletas": 24
+        },
+        "23": {
+          "flujo": 59,
+          "boletas": 31
+        },
+        "24": {
+          "flujo": 72,
+          "boletas": 32
+        },
+        "25": {
+          "flujo": 56,
+          "boletas": 30
+        },
+        "26": {
+          "flujo": 53,
+          "boletas": 16
+        },
+        "27": {
+          "flujo": 48,
+          "boletas": 25
         }
       },
       "10": {},
@@ -2108,6 +2132,22 @@
         "21": {
           "flujo": 439,
           "boletas": 44
+        },
+        "22": {
+          "flujo": 192,
+          "boletas": 26
+        },
+        "23": {
+          "flujo": 201,
+          "boletas": 17
+        },
+        "24": {
+          "flujo": 200,
+          "boletas": 22
+        },
+        "26": {
+          "flujo": 69,
+          "boletas": 6
         }
       },
       "10": {},
@@ -3175,6 +3215,34 @@
         "21": {
           "flujo": 224,
           "boletas": 23
+        },
+        "22": {
+          "flujo": 135,
+          "boletas": 21
+        },
+        "23": {
+          "flujo": 177,
+          "boletas": 16
+        },
+        "24": {
+          "flujo": 159,
+          "boletas": 16
+        },
+        "25": {
+          "flujo": 142,
+          "boletas": 17
+        },
+        "26": {
+          "flujo": 242,
+          "boletas": 35
+        },
+        "27": {
+          "flujo": 309,
+          "boletas": 49
+        },
+        "28": {
+          "flujo": 323,
+          "boletas": 33
         }
       },
       "10": {},
@@ -4214,6 +4282,26 @@
         "17": {
           "flujo": 62,
           "boletas": 10
+        },
+        "22": {
+          "flujo": 78,
+          "boletas": 8
+        },
+        "23": {
+          "flujo": 60,
+          "boletas": 4
+        },
+        "24": {
+          "flujo": 73,
+          "boletas": 3
+        },
+        "25": {
+          "flujo": 113,
+          "boletas": 9
+        },
+        "26": {
+          "flujo": 78,
+          "boletas": 11
         }
       },
       "10": {},
@@ -5275,28 +5363,28 @@
           "boletas": 0
         },
         "22": {
-          "flujo": 0,
-          "boletas": 0
+          "flujo": 109,
+          "boletas": 14
         },
         "23": {
-          "flujo": 0,
-          "boletas": 0
+          "flujo": 92,
+          "boletas": 21
         },
         "24": {
-          "flujo": 0,
-          "boletas": 0
+          "flujo": 104,
+          "boletas": 18
         },
         "25": {
-          "flujo": 0,
-          "boletas": 0
+          "flujo": 110,
+          "boletas": 19
         },
         "26": {
-          "flujo": 0,
-          "boletas": 0
+          "flujo": 146,
+          "boletas": 23
         },
         "27": {
-          "flujo": 0,
-          "boletas": 0
+          "flujo": 56,
+          "boletas": 10
         },
         "28": {
           "flujo": 0,
@@ -6376,6 +6464,34 @@
         "21": {
           "flujo": 294,
           "boletas": 12
+        },
+        "22": {
+          "flujo": 186,
+          "boletas": 9
+        },
+        "23": {
+          "flujo": 154,
+          "boletas": 10
+        },
+        "24": {
+          "flujo": 140,
+          "boletas": 4
+        },
+        "25": {
+          "flujo": 150,
+          "boletas": 10
+        },
+        "26": {
+          "flujo": 215,
+          "boletas": 11
+        },
+        "27": {
+          "flujo": 395,
+          "boletas": 19
+        },
+        "28": {
+          "flujo": 405,
+          "boletas": 16
         }
       },
       "10": {},
@@ -7453,32 +7569,32 @@
           "boletas": 27
         },
         "22": {
-          "flujo": 0,
-          "boletas": 0
+          "flujo": 287,
+          "boletas": 21
         },
         "23": {
-          "flujo": 0,
-          "boletas": 0
+          "flujo": 317,
+          "boletas": 30
         },
         "24": {
-          "flujo": 0,
-          "boletas": 0
+          "flujo": 275,
+          "boletas": 25
         },
         "25": {
-          "flujo": 0,
-          "boletas": 0
+          "flujo": 274,
+          "boletas": 26
         },
         "26": {
-          "flujo": 0,
-          "boletas": 0
+          "flujo": 376,
+          "boletas": 26
         },
         "27": {
-          "flujo": 0,
-          "boletas": 0
+          "flujo": 952,
+          "boletas": 58
         },
         "28": {
-          "flujo": 0,
-          "boletas": 0
+          "flujo": 726,
+          "boletas": 49
         },
         "29": {
           "flujo": 0,
@@ -9675,32 +9791,32 @@
           "boletas": 7
         },
         "22": {
-          "flujo": 0,
-          "boletas": 0
+          "flujo": 107,
+          "boletas": 2
         },
         "23": {
-          "flujo": 0,
-          "boletas": 0
+          "flujo": 111,
+          "boletas": 11
         },
         "24": {
-          "flujo": 0,
-          "boletas": 0
+          "flujo": 94,
+          "boletas": 7
         },
         "25": {
-          "flujo": 0,
-          "boletas": 0
+          "flujo": 122,
+          "boletas": 4
         },
         "26": {
-          "flujo": 0,
-          "boletas": 0
+          "flujo": 146,
+          "boletas": 11
         },
         "27": {
-          "flujo": 0,
-          "boletas": 0
+          "flujo": 201,
+          "boletas": 10
         },
         "28": {
-          "flujo": 0,
-          "boletas": 0
+          "flujo": 152,
+          "boletas": 5
         },
         "29": {
           "flujo": 0,
@@ -10786,32 +10902,32 @@
           "boletas": 22
         },
         "22": {
-          "flujo": 0,
-          "boletas": 0
+          "flujo": 144,
+          "boletas": 16
         },
         "23": {
-          "flujo": 0,
-          "boletas": 0
+          "flujo": 159,
+          "boletas": 21
         },
         "24": {
-          "flujo": 0,
-          "boletas": 0
+          "flujo": 143,
+          "boletas": 22
         },
         "25": {
-          "flujo": 0,
-          "boletas": 0
+          "flujo": 155,
+          "boletas": 20
         },
         "26": {
-          "flujo": 0,
-          "boletas": 0
+          "flujo": 214,
+          "boletas": 34
         },
         "27": {
-          "flujo": 0,
-          "boletas": 0
+          "flujo": 443,
+          "boletas": 36
         },
         "28": {
-          "flujo": 0,
-          "boletas": 0
+          "flujo": 290,
+          "boletas": 26
         },
         "29": {
           "flujo": 0,
@@ -11897,32 +12013,32 @@
           "boletas": 23
         },
         "22": {
-          "flujo": 0,
-          "boletas": 0
+          "flujo": 77,
+          "boletas": 12
         },
         "23": {
-          "flujo": 0,
-          "boletas": 0
+          "flujo": 86,
+          "boletas": 14
         },
         "24": {
-          "flujo": 0,
-          "boletas": 0
+          "flujo": 116,
+          "boletas": 9
         },
         "25": {
-          "flujo": 0,
-          "boletas": 0
+          "flujo": 89,
+          "boletas": 13
         },
         "26": {
-          "flujo": 0,
-          "boletas": 0
+          "flujo": 166,
+          "boletas": 21
         },
         "27": {
-          "flujo": 0,
-          "boletas": 0
+          "flujo": 233,
+          "boletas": 26
         },
         "28": {
-          "flujo": 0,
-          "boletas": 0
+          "flujo": 196,
+          "boletas": 29
         },
         "29": {
           "flujo": 0,
@@ -11939,8 +12055,8 @@
     }
   },
   "metadata": {
-    "lastUpdated": "2025-09-22T01:49:12.846Z",
-    "recordsProcessed": 2921,
-    "updateDate": "21-09-2025"
+    "lastUpdated": "2025-09-29T03:39:09.777Z",
+    "recordsProcessed": 2950,
+    "updateDate": "29-09-2025"
   }
 }
