@@ -18,14 +18,14 @@ export function generateWeeklyDataFromDaily() {
   storeNames.forEach(storeName => {
     const storeWeeks = [];
     
-    // Generar 39 semanas aproximadamente (9 meses)
-    for (let week = 1; week <= 39; week++) {
+    // Generar 43 semanas aproximadamente (10 meses)
+    for (let week = 1; week <= 43; week++) {
       let weekFlujo = 0;
       let weekBoletas = 0;
       let daysCount = 0;
 
       // Para cada mes, encontrar qué días pertenecen a esta semana
-      for (let month = 1; month <= 9; month++) {
+      for (let month = 1; month <= 10; month++) {
         if (dailyData[storeName][month]) {
           Object.keys(dailyData[storeName][month]).forEach(day => {
             const dayNumber = parseInt(day);
@@ -58,7 +58,7 @@ export function generateWeeklyDataFromDaily() {
 
   // Agregar resumen (suma de TODAS las tiendas, sin importar selección)
   const summaryData = [];
-  for (let week = 1; week <= 39; week++) {
+  for (let week = 1; week <= 43; week++) {
     let totalFlujo = 0;
     let totalBoletas = 0;
     
@@ -88,7 +88,7 @@ export function generateWeeklyDataFromDaily() {
 export function generateMonthlyDataFromDaily() {
   const storeNames = Object.keys(dailyData);
   const stores = [];
-  const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre'];
+  const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre'];
 
   storeNames.forEach(storeName => {
     const storeMonths = [];
@@ -163,14 +163,15 @@ function getWeekOfYear(year, month, day) {
   // Enero: semanas 1-5, Febrero: 6-9, etc.
   const monthToWeekStart = {
     1: 1,   // Enero: semanas 1-5
-    2: 6,   // Febrero: semanas 6-9  
+    2: 6,   // Febrero: semanas 6-9
     3: 10,  // Marzo: semanas 10-14
     4: 15,  // Abril: semanas 15-18
     5: 19,  // Mayo: semanas 19-22
     6: 23,  // Junio: semanas 23-27
     7: 28,  // Julio: semanas 28-31
     8: 32,  // Agosto: semanas 32-35
-    9: 36   // Septiembre: semanas 36-39
+    9: 36,  // Septiembre: semanas 36-39
+    10: 40  // Octubre: semanas 40-43
   };
   
   const weekStart = monthToWeekStart[month] || 1;
@@ -190,7 +191,8 @@ export function getAvailableDatesForMonth(month) {
     'Junio': Array.from({length: 30}, (_, i) => i + 1),
     'Julio': Array.from({length: 31}, (_, i) => i + 1),
     'Agosto': Array.from({length: 25}, (_, i) => i + 1), // Hasta el 25 según tus datos
-    'Septiembre': Array.from({length: 7}, (_, i) => i + 1) // Hasta el 7 según los datos disponibles
+    'Septiembre': Array.from({length: 7}, (_, i) => i + 1), // Hasta el 7 según los datos disponibles
+    'Octubre': Array.from({length: 5}, (_, i) => i + 1) // Hasta el 5 según los datos disponibles
   };
   
   return datesPerMonth[month] || [];
@@ -200,8 +202,8 @@ export function getAvailableDatesForMonth(month) {
 export function generateDateBasedComparisonFromWeekly(weeklyData, cutoffDay, cutoffMonth, selectedStores, selectedMetric) {
   // Usar los datos importados del JSON
   const csvData = dailyData;
-  
-  const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre'];
+
+  const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre'];
   const monthlyTotals = {};
   
   // Para cada mes disponible
@@ -278,6 +280,6 @@ export function generateDateBasedComparisonFromWeekly(weeklyData, cutoffDay, cut
 }
 
 function getMonthName(monthNumber) {
-  const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre'];
+  const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre'];
   return months[monthNumber - 1];
 }
