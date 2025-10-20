@@ -11434,6 +11434,26 @@
           "flujo": 205,
           "boletas": 16
         },
+        "7": {
+          "flujo": 201,
+          "boletas": 24
+        },
+        "8": {
+          "flujo": 199,
+          "boletas": 33
+        },
+        "9": {
+          "flujo": 186,
+          "boletas": 39
+        },
+        "10": {
+          "flujo": 296,
+          "boletas": 29
+        },
+        "11": {
+          "flujo": 449,
+          "boletas": 32
+        },
         "12": {
           "flujo": 380,
           "boletas": 39
@@ -11445,6 +11465,26 @@
         "14": {
           "flujo": 162,
           "boletas": 23
+        },
+        "15": {
+          "flujo": 162,
+          "boletas": 21
+        },
+        "16": {
+          "flujo": 163,
+          "boletas": 20
+        },
+        "17": {
+          "flujo": 215,
+          "boletas": 31
+        },
+        "18": {
+          "flujo": 457,
+          "boletas": 41
+        },
+        "19": {
+          "flujo": 294,
+          "boletas": 25
         }
       },
       "11": {},
@@ -12640,8 +12680,8 @@
     }
   },
   "metadata": {
-    "lastUpdated": "2025-10-20T16:58:48.336Z",
-    "recordsProcessed": 3094,
+    "lastUpdated": "2025-10-20T20:16:50.301Z",
+    "recordsProcessed": 3104,
     "updateDate": "20-10-2025"
   }
 }
