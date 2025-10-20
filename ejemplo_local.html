@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualización de Datos - Ejemplo Local</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card h3 {
+            color: #667eea;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        .stat-card .value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #764ba2;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+        }
+
+        .chart-container h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        canvas {
+            max-height: 400px;
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 30px;
+            font-size: 0.9em;
+        }
+
+        .loading {
+            text-align: center;
+            color: white;
+            font-size: 1.5em;
+            padding: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Dashboard de Datos Diarios</h1>
+
+        <div id="loading" class="loading">Cargando datos...</div>
+
+        <div id="content" style="display: none;">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Flujo</h3>
+                    <div class="value" id="totalFlujo">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Boletas</h3>
+                    <div class="value" id="totalBoletas">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Conversión Promedio</h3>
+                    <div class="value" id="avgConversion">0%</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Registros</h3>
+                    <div class="value" id="totalRegistros">0</div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h2>Flujo vs Boletas por Local</h2>
+                <canvas id="chartLocales"></canvas>
+            </div>
+
+            <div class="chart-container">
+                <h2>Tendencia Mensual</h2>
+                <canvas id="chartMensual"></canvas>
+            </div>
+
+            <div class="chart-container">
+                <h2>Tasa de Conversión por Local</h2>
+                <canvas id="chartConversion"></canvas>
+            </div>
+        </div>
+
+        <div class="footer">
+            Actualizado: <span id="lastUpdate"></span>
+        </div>
+    </div>
+
+    <script>
+        // Cargar datos desde el archivo JSON
+        fetch('./src/dailyData.json')
+            .then(response => response.json())
+            .then(jsonData => {
+                console.log('Datos cargados:', jsonData);
+                procesarDatos(jsonData);
+            })
+            .catch(error => {
+                console.error('Error cargando datos:', error);
+                document.getElementById('loading').textContent = 'Error cargando datos. Verifica que el archivo dailyData.json exista.';
+            });
+
+        function procesarDatos(jsonData) {
+            const data = jsonData.data;
+            const locales = Object.keys(data);
+
+            let totalFlujo = 0;
+            let totalBoletas = 0;
+            let totalRegistros = 0;
+
+            const datosPorLocal = {};
+            const datosPorMes = {};
+
+            // Procesar datos
+            locales.forEach(local => {
+                datosPorLocal[local] = { flujo: 0, boletas: 0 };
+
+                Object.keys(data[local]).forEach(mes => {
+                    if (!datosPorMes[mes]) {
+                        datosPorMes[mes] = { flujo: 0, boletas: 0 };
+                    }
+
+                    Object.keys(data[local][mes]).forEach(dia => {
+                        const registro = data[local][mes][dia];
+                        const flujo = registro.flujo || 0;
+                        const boletas = registro.boletas || 0;
+
+                        totalFlujo += flujo;
+                        totalBoletas += boletas;
+                        totalRegistros++;
+
+                        datosPorLocal[local].flujo += flujo;
+                        datosPorLocal[local].boletas += boletas;
+
+                        datosPorMes[mes].flujo += flujo;
+                        datosPorMes[mes].boletas += boletas;
+                    });
+                });
+            });
+
+            const avgConversion = totalFlujo > 0 ? ((totalBoletas / totalFlujo) * 100).toFixed(1) : 0;
+
+            // Actualizar estadísticas
+            document.getElementById('totalFlujo').textContent = totalFlujo.toLocaleString();
+            document.getElementById('totalBoletas').textContent = totalBoletas.toLocaleString();
+            document.getElementById('avgConversion').textContent = avgConversion + '%';
+            document.getElementById('totalRegistros').textContent = totalRegistros.toLocaleString();
+            document.getElementById('lastUpdate').textContent = jsonData.lastUpdate || new Date().toLocaleDateString();
+
+            // Crear gráficos
+            crearGraficoLocales(datosPorLocal);
+            crearGraficoMensual(datosPorMes);
+            crearGraficoConversion(datosPorLocal);
+
+            // Mostrar contenido
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('content').style.display = 'block';
+        }
+
+        function crearGraficoLocales(datos) {
+            const ctx = document.getElementById('chartLocales').getContext('2d');
+            const locales = Object.keys(datos);
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: locales,
+                    datasets: [
+                        {
+                            label: 'Flujo',
+                            data: locales.map(l => datos[l].flujo),
+                            backgroundColor: 'rgba(102, 126, 234, 0.8)',
+                            borderColor: 'rgba(102, 126, 234, 1)',
+                            borderWidth: 2
+                        },
+                        {
+                            label: 'Boletas',
+                            data: locales.map(l => datos[l].boletas),
+                            backgroundColor: 'rgba(118, 75, 162, 0.8)',
+                            borderColor: 'rgba(118, 75, 162, 1)',
+                            borderWidth: 2
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    }
+                }
+            });
+        }
+
+        function crearGraficoMensual(datos) {
+            const ctx = document.getElementById('chartMensual').getContext('2d');
+            const meses = Object.keys(datos).sort((a, b) => parseInt(a) - parseInt(b));
+            const mesesNombres = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: meses.map(m => mesesNombres[parseInt(m) - 1]),
+                    datasets: [
+                        {
+                            label: 'Flujo',
+                            data: meses.map(m => datos[m].flujo),
+                            borderColor: 'rgba(102, 126, 234, 1)',
+                            backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                            tension: 0.4,
+                            fill: true,
+                            pointRadius: 5,
+                            pointHoverRadius: 7
+                        },
+                        {
+                            label: 'Boletas',
+                            data: meses.map(m => datos[m].boletas),
+                            borderColor: 'rgba(118, 75, 162, 1)',
+                            backgroundColor: 'rgba(118, 75, 162, 0.1)',
+                            tension: 0.4,
+                            fill: true,
+                            pointRadius: 5,
+                            pointHoverRadius: 7
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    }
+                }
+            });
+        }
+
+        function crearGraficoConversion(datos) {
+            const ctx = document.getElementById('chartConversion').getContext('2d');
+            const locales = Object.keys(datos);
+            const conversiones = locales.map(l => {
+                const flujo = datos[l].flujo;
+                return flujo > 0 ? ((datos[l].boletas / flujo) * 100).toFixed(1) : 0;
+            });
+
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: locales,
+                    datasets: [{
+                        data: conversiones,
+                        backgroundColor: [
+                            'rgba(102, 126, 234, 0.8)',
+                            'rgba(118, 75, 162, 0.8)',
+                            'rgba(237, 100, 166, 0.8)',
+                            'rgba(255, 154, 158, 0.8)',
+                            'rgba(250, 208, 196, 0.8)',
+                            'rgba(165, 177, 194, 0.8)'
+                        ],
+                        borderWidth: 3,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': ' + context.parsed + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
