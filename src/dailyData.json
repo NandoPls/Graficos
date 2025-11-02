@@ -1139,9 +1139,58 @@
         "18": {
           "flujo": 44,
           "boletas": 17
+        },
+        "20": {
+          "flujo": 54,
+          "boletas": 32
+        },
+        "21": {
+          "flujo": 47,
+          "boletas": 23
+        },
+        "22": {
+          "flujo": 51,
+          "boletas": 41
+        },
+        "23": {
+          "flujo": 61,
+          "boletas": 41
+        },
+        "24": {
+          "flujo": 37,
+          "boletas": 26
+        },
+        "25": {
+          "flujo": 32,
+          "boletas": 14
+        },
+        "27": {
+          "flujo": 43,
+          "boletas": 20
+        },
+        "28": {
+          "flujo": 55,
+          "boletas": 36
+        },
+        "29": {
+          "flujo": 54,
+          "boletas": 32
+        },
+        "30": {
+          "flujo": 37,
+          "boletas": 26
+        },
+        "31": {
+          "flujo": 24,
+          "boletas": 16
         }
       },
-      "11": {},
+      "11": {
+        "1": {
+          "flujo": 22,
+          "boletas": 9
+        }
+      },
       "12": {}
     },
     "Mall Sport - Salomon": {
@@ -3406,9 +3455,62 @@
         "19": {
           "flujo": 247,
           "boletas": 30
+        },
+        "20": {
+          "flujo": 95,
+          "boletas": 16
+        },
+        "21": {
+          "flujo": 88,
+          "boletas": 11
+        },
+        "22": {
+          "flujo": 178,
+          "boletas": 21
+        },
+        "23": {
+          "flujo": 116,
+          "boletas": 16
+        },
+        "24": {
+          "flujo": 207,
+          "boletas": 26
+        },
+        "25": {
+          "flujo": 369,
+          "boletas": 49
+        },
+        "26": {
+          "flujo": 255,
+          "boletas": 31
+        },
+        "27": {
+          "flujo": 94,
+          "boletas": 13
+        },
+        "28": {
+          "flujo": 186,
+          "boletas": 27
+        },
+        "29": {
+          "flujo": 172,
+          "boletas": 22
+        },
+        "30": {
+          "flujo": 174,
+          "boletas": 34
+        },
+        "31": {
+          "flujo": 220,
+          "boletas": 35
         }
       },
-      "11": {},
+      "11": {
+        "1": {
+          "flujo": 269,
+          "boletas": 22
+        }
+      },
       "12": {}
     },
     "BeCycling Padre Hurtado": {
@@ -4526,9 +4628,54 @@
         "17": {
           "flujo": 79,
           "boletas": 13
+        },
+        "20": {
+          "flujo": 86,
+          "boletas": 15
+        },
+        "21": {
+          "flujo": 63,
+          "boletas": 10
+        },
+        "22": {
+          "flujo": 63,
+          "boletas": 6
+        },
+        "23": {
+          "flujo": 62,
+          "boletas": 8
+        },
+        "24": {
+          "flujo": 81,
+          "boletas": 5
+        },
+        "27": {
+          "flujo": 84,
+          "boletas": 6
+        },
+        "28": {
+          "flujo": 78,
+          "boletas": 12
+        },
+        "29": {
+          "flujo": 75,
+          "boletas": 7
+        },
+        "30": {
+          "flujo": 62,
+          "boletas": 14
+        },
+        "31": {
+          "flujo": 55,
+          "boletas": 5
         }
       },
-      "11": {},
+      "11": {
+        "1": {
+          "flujo": 28,
+          "boletas": 0
+        }
+      },
       "12": {}
     },
     "Viña del Mar": {
@@ -5686,9 +5833,58 @@
         "18": {
           "flujo": 72,
           "boletas": 16
+        },
+        "20": {
+          "flujo": 98,
+          "boletas": 15
+        },
+        "21": {
+          "flujo": 96,
+          "boletas": 14
+        },
+        "22": {
+          "flujo": 77,
+          "boletas": 12
+        },
+        "23": {
+          "flujo": 116,
+          "boletas": 20
+        },
+        "24": {
+          "flujo": 140,
+          "boletas": 21
+        },
+        "25": {
+          "flujo": 60,
+          "boletas": 14
+        },
+        "27": {
+          "flujo": 108,
+          "boletas": 23
+        },
+        "28": {
+          "flujo": 124,
+          "boletas": 15
+        },
+        "29": {
+          "flujo": 98,
+          "boletas": 9
+        },
+        "30": {
+          "flujo": 136,
+          "boletas": 21
+        },
+        "31": {
+          "flujo": 124,
+          "boletas": 20
         }
       },
-      "11": {},
+      "11": {
+        "1": {
+          "flujo": 52,
+          "boletas": 6
+        }
+      },
       "12": {}
     },
     "Mall Plaza Trebol - Salomon": {
@@ -6866,9 +7062,62 @@
         "19": {
           "flujo": 242,
           "boletas": 12
+        },
+        "20": {
+          "flujo": 126,
+          "boletas": 10
+        },
+        "21": {
+          "flujo": 126,
+          "boletas": 9
+        },
+        "22": {
+          "flujo": 139,
+          "boletas": 7
+        },
+        "23": {
+          "flujo": 129,
+          "boletas": 5
+        },
+        "24": {
+          "flujo": 157,
+          "boletas": 13
+        },
+        "25": {
+          "flujo": 324,
+          "boletas": 14
+        },
+        "26": {
+          "flujo": 274,
+          "boletas": 15
+        },
+        "27": {
+          "flujo": 129,
+          "boletas": 5
+        },
+        "28": {
+          "flujo": 103,
+          "boletas": 6
+        },
+        "29": {
+          "flujo": 135,
+          "boletas": 6
+        },
+        "30": {
+          "flujo": 164,
+          "boletas": 4
+        },
+        "31": {
+          "flujo": 284,
+          "boletas": 10
         }
       },
-      "11": {},
+      "11": {
+        "1": {
+          "flujo": 272,
+          "boletas": 11
+        }
+      },
       "12": {}
     },
     "Easton": {
@@ -8054,9 +8303,62 @@
         "19": {
           "flujo": 814,
           "boletas": 65
+        },
+        "20": {
+          "flujo": 319,
+          "boletas": 20
+        },
+        "21": {
+          "flujo": 377,
+          "boletas": 26
+        },
+        "22": {
+          "flujo": 362,
+          "boletas": 23
+        },
+        "23": {
+          "flujo": 210,
+          "boletas": 21
+        },
+        "24": {
+          "flujo": 395,
+          "boletas": 30
+        },
+        "25": {
+          "flujo": 989,
+          "boletas": 66
+        },
+        "26": {
+          "flujo": 875,
+          "boletas": 38
+        },
+        "27": {
+          "flujo": 276,
+          "boletas": 18
+        },
+        "28": {
+          "flujo": 302,
+          "boletas": 25
+        },
+        "29": {
+          "flujo": 296,
+          "boletas": 23
+        },
+        "30": {
+          "flujo": 433,
+          "boletas": 35
+        },
+        "31": {
+          "flujo": 837,
+          "boletas": 59
         }
       },
-      "11": {},
+      "11": {
+        "1": {
+          "flujo": 1102,
+          "boletas": 71
+        }
+      },
       "12": {}
     },
     "Costanera Center - Salomon": {
@@ -10297,9 +10599,62 @@
         "19": {
           "flujo": 167,
           "boletas": 12
+        },
+        "20": {
+          "flujo": 134,
+          "boletas": 5
+        },
+        "21": {
+          "flujo": 105,
+          "boletas": 2
+        },
+        "22": {
+          "flujo": 80,
+          "boletas": 8
+        },
+        "23": {
+          "flujo": 115,
+          "boletas": 7
+        },
+        "24": {
+          "flujo": 117,
+          "boletas": 5
+        },
+        "25": {
+          "flujo": 211,
+          "boletas": 3
+        },
+        "26": {
+          "flujo": 181,
+          "boletas": 9
+        },
+        "27": {
+          "flujo": 105,
+          "boletas": 3
+        },
+        "28": {
+          "flujo": 115,
+          "boletas": 7
+        },
+        "29": {
+          "flujo": 121,
+          "boletas": 13
+        },
+        "30": {
+          "flujo": 151,
+          "boletas": 13
+        },
+        "31": {
+          "flujo": 229,
+          "boletas": 11
         }
       },
-      "11": {},
+      "11": {
+        "1": {
+          "flujo": 242,
+          "boletas": 10
+        }
+      },
       "12": {}
     },
     "Parque Arauco": {
@@ -11485,9 +11840,62 @@
         "19": {
           "flujo": 294,
           "boletas": 25
+        },
+        "20": {
+          "flujo": 129,
+          "boletas": 18
+        },
+        "21": {
+          "flujo": 124,
+          "boletas": 41
+        },
+        "22": {
+          "flujo": 161,
+          "boletas": 20
+        },
+        "23": {
+          "flujo": 142,
+          "boletas": 43
+        },
+        "24": {
+          "flujo": 224,
+          "boletas": 24
+        },
+        "25": {
+          "flujo": 421,
+          "boletas": 40
+        },
+        "26": {
+          "flujo": 254,
+          "boletas": 25
+        },
+        "27": {
+          "flujo": 150,
+          "boletas": 23
+        },
+        "28": {
+          "flujo": 153,
+          "boletas": 34
+        },
+        "29": {
+          "flujo": 154,
+          "boletas": 37
+        },
+        "30": {
+          "flujo": 173,
+          "boletas": 20
+        },
+        "31": {
+          "flujo": 307,
+          "boletas": 27
         }
       },
-      "11": {},
+      "11": {
+        "1": {
+          "flujo": 451,
+          "boletas": 21
+        }
+      },
       "12": {}
     },
     "Tienda Arena MS": {
@@ -12673,15 +13081,68 @@
         "19": {
           "flujo": 163,
           "boletas": 22
+        },
+        "20": {
+          "flujo": 99,
+          "boletas": 7
+        },
+        "21": {
+          "flujo": 82,
+          "boletas": 9
+        },
+        "22": {
+          "flujo": 110,
+          "boletas": 18
+        },
+        "23": {
+          "flujo": 62,
+          "boletas": 10
+        },
+        "24": {
+          "flujo": 122,
+          "boletas": 23
+        },
+        "25": {
+          "flujo": 196,
+          "boletas": 24
+        },
+        "26": {
+          "flujo": 198,
+          "boletas": 19
+        },
+        "27": {
+          "flujo": 104,
+          "boletas": 14
+        },
+        "28": {
+          "flujo": 76,
+          "boletas": 15
+        },
+        "29": {
+          "flujo": 77,
+          "boletas": 14
+        },
+        "30": {
+          "flujo": 114,
+          "boletas": 22
+        },
+        "31": {
+          "flujo": 168,
+          "boletas": 18
         }
       },
-      "11": {},
+      "11": {
+        "1": {
+          "flujo": 109,
+          "boletas": 13
+        }
+      },
       "12": {}
     }
   },
   "metadata": {
-    "lastUpdated": "2025-10-20T20:27:27.276Z",
-    "recordsProcessed": 3104,
-    "updateDate": "20-10-2025"
+    "lastUpdated": "2025-11-02T21:40:17.248Z",
+    "recordsProcessed": 3217,
+    "updateDate": "02-11-2025"
   }
 }

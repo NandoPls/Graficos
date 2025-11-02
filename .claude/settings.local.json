@@ -12,7 +12,9 @@
       "Bash(git commit:*)",
       "Bash(git pull:*)",
       "Bash(npm start)",
-      "Read(//c//**)"
+      "Read(//c//**)",
+      "Bash(where:*)",
+      "Bash(git fetch:*)"
     ],
     "defaultMode": "acceptEdits",
     "additionalDirectories": [
