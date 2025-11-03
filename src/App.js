@@ -279,7 +279,7 @@ export default function RetailDashboard() {
   };
 
   const getCurrentMonthName = () => {
-    const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre'];
+    const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
     return months[cutoffMonth - 1];
   };
 
@@ -491,6 +491,8 @@ export default function RetailDashboard() {
                   <option value={8}>Agosto</option>
                   <option value={9}>Septiembre</option>
                   <option value={10}>Octubre</option>
+                  <option value={11}>Noviembre</option>
+                  <option value={12}>Diciembre</option>
                 </select>
               </div>
             </div>
@@ -538,7 +540,7 @@ export default function RetailDashboard() {
                     </label>
                   ))
                 : // Modo de comparación mensual - checkboxes para seleccionar meses
-                  MONTHS_ORDER.slice(0, 10).map((month, index) => (
+                  MONTHS_ORDER.map((month, index) => (
                     <label key={index} className="flex items-center cursor-pointer hover:text-indigo-700">
                       <input
                         type="checkbox"

@@ -3508,7 +3508,11 @@
       "11": {
         "1": {
           "flujo": 269,
-          "boletas": 22
+          "boletas": 26
+        },
+        "2": {
+          "flujo": 190,
+          "boletas": 20
         }
       },
       "12": {}
@@ -7116,6 +7120,10 @@
         "1": {
           "flujo": 272,
           "boletas": 11
+        },
+        "2": {
+          "flujo": 306,
+          "boletas": 12
         }
       },
       "12": {}
@@ -8356,7 +8364,11 @@
       "11": {
         "1": {
           "flujo": 1102,
-          "boletas": 71
+          "boletas": 78
+        },
+        "2": {
+          "flujo": 799,
+          "boletas": 53
         }
       },
       "12": {}
@@ -10652,7 +10664,11 @@
       "11": {
         "1": {
           "flujo": 242,
-          "boletas": 10
+          "boletas": 14
+        },
+        "2": {
+          "flujo": 178,
+          "boletas": 13
         }
       },
       "12": {}
@@ -11893,7 +11909,11 @@
       "11": {
         "1": {
           "flujo": 451,
-          "boletas": 21
+          "boletas": 36
+        },
+        "2": {
+          "flujo": 290,
+          "boletas": 24
         }
       },
       "12": {}
@@ -13134,15 +13154,19 @@
       "11": {
         "1": {
           "flujo": 109,
-          "boletas": 13
+          "boletas": 14
+        },
+        "2": {
+          "flujo": 233,
+          "boletas": 28
         }
       },
       "12": {}
     }
   },
   "metadata": {
-    "lastUpdated": "2025-11-02T21:40:17.248Z",
-    "recordsProcessed": 3217,
-    "updateDate": "02-11-2025"
+    "lastUpdated": "2025-11-03T13:19:05.890Z",
+    "recordsProcessed": 3223,
+    "updateDate": "03-11-2025"
   }
 }
