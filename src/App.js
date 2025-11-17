@@ -3,6 +3,7 @@ import html2canvas from "html2canvas";
 import './setupGlobals';
 import { generatePPT } from './generatePPT';
 import DataUploader from './DataUploader';
+import Statistics from './Statistics';
 import {
   LineChart,
   Line,
@@ -101,6 +102,7 @@ export default function RetailDashboard() {
   const [weeklyStoreData, setWeeklyStoreData] = useState([]);
   const [initialStoreData, setInitialStoreData] = useState([]);
   const [viewMode, setViewMode] = useState('months');
+  const [showStatistics, setShowStatistics] = useState(false);
   const [storeData, setStoreData] = useState([]);
   const [monthsVisible, setMonthsVisible] = useState([
     'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'
@@ -144,7 +146,9 @@ export default function RetailDashboard() {
           weekly: weekly.length,
           monthly: monthly.length,
           weeklyStores: weekly.map(s => s.name),
-          monthlyStores: monthly.map(s => s.name)
+          monthlyStores: monthly.map(s => s.name),
+          sampleMonthlyData: monthly[0]?.data?.slice(0, 3), // Primeros 3 meses de la primera tienda
+          rawDataStructure: Object.keys(result.data)
         });
 
         // Inicializar weeksVisible si hay datos
@@ -368,33 +372,43 @@ export default function RetailDashboard() {
         <div className="mb-6 flex gap-4">
           <button
             type="button"
-            onClick={() => handleModeChange('months')}
+            onClick={() => { handleModeChange('months'); setShowStatistics(false); }}
             className={
               `px-4 py-2 rounded-lg font-semibold ` +
-              (viewMode === 'months' ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-800')
+              (viewMode === 'months' && !showStatistics ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-800')
             }
           >
             Meses
           </button>
           <button
             type="button"
-            onClick={() => handleModeChange('weeks')}
+            onClick={() => { handleModeChange('weeks'); setShowStatistics(false); }}
             className={
               `px-4 py-2 rounded-lg font-semibold ` +
-              (viewMode === 'weeks' ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-800')
+              (viewMode === 'weeks' && !showStatistics ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-800')
             }
           >
             Semanas
           </button>
           <button
             type="button"
-            onClick={() => handleModeChange('monthlyComparison')}
+            onClick={() => { handleModeChange('monthlyComparison'); setShowStatistics(false); }}
             className={
               `px-4 py-2 rounded-lg font-semibold ` +
-              (viewMode === 'monthlyComparison' ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-800')
+              (viewMode === 'monthlyComparison' && !showStatistics ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-800')
             }
           >
             Comparación Mensual
+          </button>
+          <button
+            type="button"
+            onClick={() => setShowStatistics(true)}
+            className={
+              `px-4 py-2 rounded-lg font-semibold ` +
+              (showStatistics ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-800')
+            }
+          >
+            📊 Estadísticas
           </button>
         </div>
         <div className="flex flex-col md:flex-row md:items-end md:gap-8 mb-8">
@@ -626,8 +640,18 @@ export default function RetailDashboard() {
           </div>
         </div>
       </div>
-      <div className="bg-white p-8 rounded-2xl shadow-2xl border border-gray-200" style={{ height: 450 }} ref={chartContainerRef}>
-        <ResponsiveContainer width="100%" height="100%">
+
+      {/* Mostrar estadísticas o gráfico según la pestaña seleccionada */}
+      {showStatistics ? (
+        <Statistics
+          storeData={storeData}
+          selectedStores={selectedStores}
+          selectedMetric={selectedMetric}
+          viewMode={viewMode}
+        />
+      ) : (
+        <div className="bg-white p-8 rounded-2xl shadow-2xl border border-gray-200" style={{ height: 450 }} ref={chartContainerRef}>
+          <ResponsiveContainer width="100%" height="100%">
           {chartType === 'line' && (
             <LineChart data={chartData} margin={{ top: 25, right: 30, left: 20, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -783,6 +807,7 @@ export default function RetailDashboard() {
           )}
         </ResponsiveContainer>
       </div>
+      )}
     </div>
   );
 }
