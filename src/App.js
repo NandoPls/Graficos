@@ -140,6 +140,13 @@ export default function RetailDashboard() {
         setInitialStoreData(monthly);
         setStoreData(monthly);
 
+        console.log('📊 Datos cargados:', {
+          weekly: weekly.length,
+          monthly: monthly.length,
+          weeklyStores: weekly.map(s => s.name),
+          monthlyStores: monthly.map(s => s.name)
+        });
+
         // Inicializar weeksVisible si hay datos
         if (weekly.length > 0 && weekly[0].data.length > 0) {
           const weeksOrder = weekly[0].data.map(d => d.week);
