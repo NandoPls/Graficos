@@ -148,8 +148,11 @@ export default function RetailDashboard() {
           weeklyStores: weekly.map(s => s.name),
           monthlyStores: monthly.map(s => s.name),
           sampleMonthlyData: monthly[0]?.data?.slice(0, 3), // Primeros 3 meses de la primera tienda
-          rawDataStructure: Object.keys(result.data)
+          rawDataStructure: Object.keys(result.data),
+          yearBeingUsed: result.metadata?.years?.[result.metadata.years.length - 1] || 'desconocido'
         });
+
+        console.log('🎯 Año seleccionado automáticamente para visualizar:', result.metadata?.years);
 
         // Inicializar weeksVisible si hay datos
         if (weekly.length > 0 && weekly[0].data.length > 0) {

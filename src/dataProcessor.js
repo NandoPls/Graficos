@@ -1,3 +1,28 @@
+// Función helper para encontrar el año con más datos
+function findYearWithMostData(yearlyData) {
+  const years = Object.keys(yearlyData).map(Number).sort();
+  if (years.length === 0) return null;
+
+  let maxRecords = 0;
+  let bestYear = years[years.length - 1];
+
+  years.forEach(year => {
+    let recordCount = 0;
+    Object.keys(yearlyData[year]).forEach(storeName => {
+      Object.keys(yearlyData[year][storeName]).forEach(month => {
+        recordCount += Object.keys(yearlyData[year][storeName][month]).length;
+      });
+    });
+
+    if (recordCount > maxRecords) {
+      maxRecords = recordCount;
+      bestYear = year;
+    }
+  });
+
+  return bestYear;
+}
+
 // Función para generar datos semanales desde datos diarios (soporta múltiples años)
 export function generateWeeklyDataFromDaily(yearlyData) {
   if (!yearlyData) return [];
@@ -15,9 +40,9 @@ export function generateWeeklyDataFromDaily(yearlyData) {
     currentYear = 2025; // Asumir 2025 por defecto
   } else {
     // Estructura nueva: yearlyData[year][storeName][month][day]
-    const years = Object.keys(yearlyData).map(Number).sort();
-    if (years.length === 0) return [];
-    currentYear = years[years.length - 1];
+    // Usar el año con más datos en lugar del más reciente
+    currentYear = findYearWithMostData(yearlyData);
+    if (!currentYear) return [];
     dailyData = yearlyData[currentYear];
   }
 
@@ -110,9 +135,9 @@ export function generateMonthlyDataFromDaily(yearlyData) {
     currentYear = 2025; // Asumir 2025 por defecto
   } else {
     // Estructura nueva: yearlyData[year][storeName][month][day]
-    const years = Object.keys(yearlyData).map(Number).sort();
-    if (years.length === 0) return [];
-    currentYear = years[years.length - 1];
+    // Usar el año con más datos en lugar del más reciente
+    currentYear = findYearWithMostData(yearlyData);
+    if (!currentYear) return [];
     dailyData = yearlyData[currentYear];
   }
 
@@ -247,9 +272,9 @@ export function generateDateBasedComparisonFromWeekly(yearlyData, weeklyData, cu
     csvData = yearlyData;
   } else {
     // Estructura nueva: yearlyData[year][storeName][month][day]
-    const years = Object.keys(yearlyData).map(Number).sort();
-    if (years.length === 0) return [];
-    const currentYear = years[years.length - 1];
+    // Usar el año con más datos en lugar del más reciente
+    const currentYear = findYearWithMostData(yearlyData);
+    if (!currentYear) return [];
     csvData = yearlyData[currentYear];
   }
   const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
