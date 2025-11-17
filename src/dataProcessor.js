@@ -1,6 +1,14 @@
-// Función para generar datos semanales desde datos diarios
-export function generateWeeklyDataFromDaily(dailyData) {
-  if (!dailyData) return [];
+// Función para generar datos semanales desde datos diarios (soporta múltiples años)
+export function generateWeeklyDataFromDaily(yearlyData) {
+  if (!yearlyData) return [];
+
+  // Obtener todos los años disponibles
+  const years = Object.keys(yearlyData).map(Number).sort();
+  if (years.length === 0) return [];
+
+  // Usar el año más reciente por defecto
+  const currentYear = years[years.length - 1];
+  const dailyData = yearlyData[currentYear];
 
   const storeNames = Object.keys(dailyData);
   const stores = [];
@@ -19,7 +27,7 @@ export function generateWeeklyDataFromDaily(dailyData) {
         if (dailyData[storeName][month]) {
           Object.keys(dailyData[storeName][month]).forEach(day => {
             const dayNumber = parseInt(day);
-            const weekOfDay = getWeekOfYear(2025, month, dayNumber);
+            const weekOfDay = getWeekOfYear(currentYear, month, dayNumber);
 
             if (weekOfDay === week) {
               weekFlujo += dailyData[storeName][month][day].flujo;
@@ -74,9 +82,17 @@ export function generateWeeklyDataFromDaily(dailyData) {
   return stores;
 }
 
-// Función para generar datos mensuales desde datos diarios
-export function generateMonthlyDataFromDaily(dailyData) {
-  if (!dailyData) return [];
+// Función para generar datos mensuales desde datos diarios (soporta múltiples años)
+export function generateMonthlyDataFromDaily(yearlyData) {
+  if (!yearlyData) return [];
+
+  // Obtener todos los años disponibles
+  const years = Object.keys(yearlyData).map(Number).sort();
+  if (years.length === 0) return [];
+
+  // Usar el año más reciente por defecto
+  const currentYear = years[years.length - 1];
+  const dailyData = yearlyData[currentYear];
 
   const storeNames = Object.keys(dailyData);
   const stores = [];
@@ -194,11 +210,16 @@ export function getAvailableDatesForMonth(month) {
   return datesPerMonth[month] || [];
 }
 
-// Función para generar comparación basada en fecha límite
-export function generateDateBasedComparisonFromWeekly(dailyData, weeklyData, cutoffDay, cutoffMonth, selectedStores, selectedMetric) {
-  if (!dailyData) return [];
+// Función para generar comparación basada en fecha límite (soporta múltiples años)
+export function generateDateBasedComparisonFromWeekly(yearlyData, weeklyData, cutoffDay, cutoffMonth, selectedStores, selectedMetric) {
+  if (!yearlyData) return [];
 
-  const csvData = dailyData;
+  // Obtener todos los años disponibles y usar el más reciente
+  const years = Object.keys(yearlyData).map(Number).sort();
+  if (years.length === 0) return [];
+
+  const currentYear = years[years.length - 1];
+  const csvData = yearlyData[currentYear];
   const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
   const monthlyTotals = {};
 

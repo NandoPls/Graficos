@@ -30,15 +30,8 @@ export default async function handler(req, res) {
     console.log('📝 Processing CSV data...');
 
     const lines = csvContent.split('\n');
-    const monthlyData = {};
-
-    // Inicializar estructura de datos
-    Object.values(storeCodeMap).forEach(storeName => {
-      monthlyData[storeName] = {};
-      for (let month = 1; month <= 12; month++) {
-        monthlyData[storeName][month] = {};
-      }
-    });
+    const yearlyData = {}; // Cambio: ahora soporta múltiples años
+    const yearsFound = new Set();
 
     let processedRecords = 0;
 
@@ -59,14 +52,27 @@ export default async function handler(req, res) {
         if (storeCode && dateStr && storeCodeMap[storeCode] && dateStr.match(/\d{2}-\d{2}-\d{4}/)) {
           const [day, month, year] = dateStr.split('-').map(Number);
 
-          if (year >= 2025 && month >= 1 && month <= 12) {
+          // Validación básica: año entre 2020-2100, mes 1-12
+          if (year >= 2020 && year <= 2100 && month >= 1 && month <= 12) {
             const storeName = storeCodeMap[storeCode];
+
+            // Inicializar estructura si no existe
+            if (!yearlyData[year]) {
+              yearlyData[year] = {};
+            }
+            if (!yearlyData[year][storeName]) {
+              yearlyData[year][storeName] = {};
+            }
+            if (!yearlyData[year][storeName][month]) {
+              yearlyData[year][storeName][month] = {};
+            }
 
             if (flujo !== '' && flujo !== undefined) {
               const flujoNum = parseInt(flujo) || 0;
               const boletasNum = parseInt(boletas) || 0;
 
-              monthlyData[storeName][month][day] = { flujo: flujoNum, boletas: boletasNum };
+              yearlyData[year][storeName][month][day] = { flujo: flujoNum, boletas: boletasNum };
+              yearsFound.add(year);
               processedRecords++;
             }
           }
@@ -76,11 +82,12 @@ export default async function handler(req, res) {
 
     // Preparar datos finales con metadata
     const finalData = {
-      data: monthlyData,
+      data: yearlyData,
       metadata: {
         lastUpdated: new Date().toISOString(),
         recordsProcessed: processedRecords,
-        updateDate: new Date().toLocaleDateString('es-CL')
+        updateDate: new Date().toLocaleDateString('es-CL'),
+        years: Array.from(yearsFound).sort()
       }
     };
 

@@ -146,12 +146,12 @@ export default function RetailDashboard() {
           setWeeksVisible(weeksOrder.slice(0, 5));
         }
 
-        // Inicializar selectedStores
+        // Inicializar selectedStores - solo "Resumen" seleccionado por defecto
         const initialSelectedStores = {};
         monthly.forEach(store => {
-          initialSelectedStores[store.name] = true;
+          initialSelectedStores[store.name] = false; // Todas las tiendas desmarcadas
         });
-        initialSelectedStores["Resumen"] = true;
+        initialSelectedStores["Resumen"] = true; // Solo Resumen marcado
         setSelectedStores(initialSelectedStores);
       }
     } catch (error) {
@@ -336,13 +336,21 @@ export default function RetailDashboard() {
     );
   }
 
+  // Obtener el año actual de los datos
+  const currentYear = dataMetadata?.years?.[dataMetadata.years.length - 1] || new Date().getFullYear();
+
   return (
     <div className="flex flex-col min-h-screen p-8 bg-gradient-to-br from-indigo-50 via-white to-indigo-100 font-sans">
       <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold text-indigo-900 tracking-tight drop-shadow-sm">Dashboard de Evolución de Tiendas - 2025</h1>
+        <h1 className="text-4xl font-bold text-indigo-900 tracking-tight drop-shadow-sm">
+          Dashboard de Evolución de Tiendas - {currentYear}
+        </h1>
         {dataMetadata && (
           <p className="text-sm text-gray-600 mt-2">
             📊 Última actualización: {dataMetadata.updateDate} | {dataMetadata.recordsProcessed} registros
+            {dataMetadata.years && dataMetadata.years.length > 1 && (
+              <span className="ml-2">| Años disponibles: {dataMetadata.years.join(', ')}</span>
+            )}
           </p>
         )}
       </div>
