@@ -2,13 +2,24 @@
 export function generateWeeklyDataFromDaily(yearlyData) {
   if (!yearlyData) return [];
 
-  // Obtener todos los años disponibles
-  const years = Object.keys(yearlyData).map(Number).sort();
-  if (years.length === 0) return [];
+  // Detectar si es estructura antigua (sin años) o nueva (con años)
+  const firstKey = Object.keys(yearlyData)[0];
+  const isOldStructure = firstKey && typeof yearlyData[firstKey] === 'object' && yearlyData[firstKey][1];
 
-  // Usar el año más reciente por defecto
-  const currentYear = years[years.length - 1];
-  const dailyData = yearlyData[currentYear];
+  let dailyData;
+  let currentYear;
+
+  if (isOldStructure) {
+    // Estructura antigua: yearlyData[storeName][month][day]
+    dailyData = yearlyData;
+    currentYear = 2025; // Asumir 2025 por defecto
+  } else {
+    // Estructura nueva: yearlyData[year][storeName][month][day]
+    const years = Object.keys(yearlyData).map(Number).sort();
+    if (years.length === 0) return [];
+    currentYear = years[years.length - 1];
+    dailyData = yearlyData[currentYear];
+  }
 
   const storeNames = Object.keys(dailyData);
   const stores = [];
@@ -86,13 +97,24 @@ export function generateWeeklyDataFromDaily(yearlyData) {
 export function generateMonthlyDataFromDaily(yearlyData) {
   if (!yearlyData) return [];
 
-  // Obtener todos los años disponibles
-  const years = Object.keys(yearlyData).map(Number).sort();
-  if (years.length === 0) return [];
+  // Detectar si es estructura antigua (sin años) o nueva (con años)
+  const firstKey = Object.keys(yearlyData)[0];
+  const isOldStructure = firstKey && typeof yearlyData[firstKey] === 'object' && yearlyData[firstKey][1];
 
-  // Usar el año más reciente por defecto
-  const currentYear = years[years.length - 1];
-  const dailyData = yearlyData[currentYear];
+  let dailyData;
+  let currentYear;
+
+  if (isOldStructure) {
+    // Estructura antigua: yearlyData[storeName][month][day]
+    dailyData = yearlyData;
+    currentYear = 2025; // Asumir 2025 por defecto
+  } else {
+    // Estructura nueva: yearlyData[year][storeName][month][day]
+    const years = Object.keys(yearlyData).map(Number).sort();
+    if (years.length === 0) return [];
+    currentYear = years[years.length - 1];
+    dailyData = yearlyData[currentYear];
+  }
 
   const storeNames = Object.keys(dailyData);
   const stores = [];
@@ -214,12 +236,22 @@ export function getAvailableDatesForMonth(month) {
 export function generateDateBasedComparisonFromWeekly(yearlyData, weeklyData, cutoffDay, cutoffMonth, selectedStores, selectedMetric) {
   if (!yearlyData) return [];
 
-  // Obtener todos los años disponibles y usar el más reciente
-  const years = Object.keys(yearlyData).map(Number).sort();
-  if (years.length === 0) return [];
+  // Detectar si es estructura antigua (sin años) o nueva (con años)
+  const firstKey = Object.keys(yearlyData)[0];
+  const isOldStructure = firstKey && typeof yearlyData[firstKey] === 'object' && yearlyData[firstKey][1];
 
-  const currentYear = years[years.length - 1];
-  const csvData = yearlyData[currentYear];
+  let csvData;
+
+  if (isOldStructure) {
+    // Estructura antigua: yearlyData[storeName][month][day]
+    csvData = yearlyData;
+  } else {
+    // Estructura nueva: yearlyData[year][storeName][month][day]
+    const years = Object.keys(yearlyData).map(Number).sort();
+    if (years.length === 0) return [];
+    const currentYear = years[years.length - 1];
+    csvData = yearlyData[currentYear];
+  }
   const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
   const monthlyTotals = {};
 
