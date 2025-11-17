@@ -1,5 +1,5 @@
 // Función helper para encontrar el año con más datos
-function findYearWithMostData(yearlyData) {
+export function findYearWithMostData(yearlyData) {
   const years = Object.keys(yearlyData).map(Number).sort();
   if (years.length === 0) return null;
 
@@ -24,7 +24,7 @@ function findYearWithMostData(yearlyData) {
 }
 
 // Función para generar datos semanales desde datos diarios (soporta múltiples años)
-export function generateWeeklyDataFromDaily(yearlyData) {
+export function generateWeeklyDataFromDaily(yearlyData, specificYear = null) {
   if (!yearlyData) return [];
 
   // Detectar si es estructura antigua (sin años) o nueva (con años)
@@ -40,8 +40,12 @@ export function generateWeeklyDataFromDaily(yearlyData) {
     currentYear = 2025; // Asumir 2025 por defecto
   } else {
     // Estructura nueva: yearlyData[year][storeName][month][day]
-    // Usar el año con más datos en lugar del más reciente
-    currentYear = findYearWithMostData(yearlyData);
+    // Usar año específico o el año con más datos
+    if (specificYear && yearlyData[specificYear]) {
+      currentYear = specificYear;
+    } else {
+      currentYear = findYearWithMostData(yearlyData);
+    }
     if (!currentYear) return [];
     dailyData = yearlyData[currentYear];
   }
@@ -119,7 +123,7 @@ export function generateWeeklyDataFromDaily(yearlyData) {
 }
 
 // Función para generar datos mensuales desde datos diarios (soporta múltiples años)
-export function generateMonthlyDataFromDaily(yearlyData) {
+export function generateMonthlyDataFromDaily(yearlyData, specificYear = null) {
   if (!yearlyData) return [];
 
   // Detectar si es estructura antigua (sin años) o nueva (con años)
@@ -135,8 +139,12 @@ export function generateMonthlyDataFromDaily(yearlyData) {
     currentYear = 2025; // Asumir 2025 por defecto
   } else {
     // Estructura nueva: yearlyData[year][storeName][month][day]
-    // Usar el año con más datos en lugar del más reciente
-    currentYear = findYearWithMostData(yearlyData);
+    // Usar año específico o el año con más datos
+    if (specificYear && yearlyData[specificYear]) {
+      currentYear = specificYear;
+    } else {
+      currentYear = findYearWithMostData(yearlyData);
+    }
     if (!currentYear) return [];
     dailyData = yearlyData[currentYear];
   }

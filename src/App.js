@@ -3,7 +3,7 @@ import html2canvas from "html2canvas";
 import './setupGlobals';
 import { generatePPT } from './generatePPT';
 import DataUploader from './DataUploader';
-import Statistics from './Statistics';
+import StatisticsEnhanced from './StatisticsEnhanced';
 import {
   LineChart,
   Line,
@@ -104,6 +104,8 @@ export default function RetailDashboard() {
   const [viewMode, setViewMode] = useState('months');
   const [showStatistics, setShowStatistics] = useState(false);
   const [storeData, setStoreData] = useState([]);
+  const [selectedYear, setSelectedYear] = useState(null);
+  const [availableYears, setAvailableYears] = useState([]);
   const [monthsVisible, setMonthsVisible] = useState([
     'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'
   ]);
@@ -120,23 +122,46 @@ export default function RetailDashboard() {
   // Nuevo estado para tipo de gráfico
   const [chartType, setChartType] = useState('line');
 
-  // Función para cargar datos desde la API
+  // Función para cargar datos desde la API o fallback local
   const loadDataFromAPI = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/get-data');
-      const result = await response.json();
+
+      let result;
+
+      // Intentar cargar desde API primero
+      try {
+        const response = await fetch('/api/get-data');
+        result = await response.json();
+      } catch (apiError) {
+        // Si falla (local), cargar desde archivo JSON
+        console.log('📁 Cargando desde archivo local...');
+        const localData = await import('./dailyData.json');
+        result = localData.default || localData;
+      }
 
       if (result && result.data) {
         setDailyDataFromAPI(result.data);
         setDataMetadata(result.metadata);
 
-        // Importar funciones de procesamiento
-        const { generateWeeklyDataFromDaily, generateMonthlyDataFromDaily } = await import('./dataProcessor');
+        // Detectar años disponibles
+        const years = result.metadata?.years || [];
+        setAvailableYears(years);
 
-        // Generar datos procesados
-        const weekly = generateWeeklyDataFromDaily(result.data);
-        const monthly = generateMonthlyDataFromDaily(result.data);
+        // Importar funciones de procesamiento
+        const { generateWeeklyDataFromDaily, generateMonthlyDataFromDaily, findYearWithMostData } = await import('./dataProcessor');
+
+        // Determinar año a usar (selectedYear o el que tiene más datos)
+        const yearToUse = selectedYear || findYearWithMostData(result.data);
+
+        // Si no hay año seleccionado, establecerlo
+        if (!selectedYear && yearToUse) {
+          setSelectedYear(yearToUse);
+        }
+
+        // Generar datos procesados para el año seleccionado
+        const weekly = generateWeeklyDataFromDaily(result.data, yearToUse);
+        const monthly = generateMonthlyDataFromDaily(result.data, yearToUse);
 
         setWeeklyStoreData(weekly);
         setInitialStoreData(monthly);
@@ -147,12 +172,11 @@ export default function RetailDashboard() {
           monthly: monthly.length,
           weeklyStores: weekly.map(s => s.name),
           monthlyStores: monthly.map(s => s.name),
-          sampleMonthlyData: monthly[0]?.data?.slice(0, 3), // Primeros 3 meses de la primera tienda
+          sampleMonthlyData: monthly[0]?.data?.slice(0, 3),
           rawDataStructure: Object.keys(result.data),
-          yearBeingUsed: result.metadata?.years?.[result.metadata.years.length - 1] || 'desconocido'
+          availableYears: years,
+          selectedYear: yearToUse
         });
-
-        console.log('🎯 Año seleccionado automáticamente para visualizar:', result.metadata?.years);
 
         // Inicializar weeksVisible si hay datos
         if (weekly.length > 0 && weekly[0].data.length > 0) {
@@ -350,14 +374,32 @@ export default function RetailDashboard() {
     );
   }
 
-  // Obtener el año actual de los datos
-  const currentYear = dataMetadata?.years?.[dataMetadata.years.length - 1] || new Date().getFullYear();
+  // Función para cambiar de año
+  const handleYearChange = async (year) => {
+    setSelectedYear(year);
+    setLoading(true);
+
+    try {
+      const { generateWeeklyDataFromDaily, generateMonthlyDataFromDaily } = await import('./dataProcessor');
+
+      const weekly = generateWeeklyDataFromDaily(dailyDataFromAPI, year);
+      const monthly = generateMonthlyDataFromDaily(dailyDataFromAPI, year);
+
+      setWeeklyStoreData(weekly);
+      setInitialStoreData(monthly);
+      setStoreData(viewMode === 'months' ? monthly : weekly);
+    } catch (error) {
+      console.error('Error cambiando año:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="flex flex-col min-h-screen p-8 bg-gradient-to-br from-indigo-50 via-white to-indigo-100 font-sans">
       <div className="text-center mb-8">
         <h1 className="text-4xl font-bold text-indigo-900 tracking-tight drop-shadow-sm">
-          Dashboard de Evolución de Tiendas - {currentYear}
+          Dashboard de Evolución de Tiendas - {selectedYear || new Date().getFullYear()}
         </h1>
         {dataMetadata && (
           <p className="text-sm text-gray-600 mt-2">
@@ -366,6 +408,28 @@ export default function RetailDashboard() {
               <span className="ml-2">| Años disponibles: {dataMetadata.years.join(', ')}</span>
             )}
           </p>
+        )}
+
+        {/* Selector de año */}
+        {availableYears.length > 1 && (
+          <div className="mt-4 flex justify-center items-center gap-3">
+            <span className="text-sm font-semibold text-gray-700">📅 Ver datos del año:</span>
+            <div className="flex gap-2">
+              {availableYears.map(year => (
+                <button
+                  key={year}
+                  onClick={() => handleYearChange(year)}
+                  className={`px-4 py-2 rounded-lg font-semibold transition duration-150 ${
+                    selectedYear === year
+                      ? 'bg-indigo-600 text-white shadow-lg'
+                      : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                  }`}
+                >
+                  {year}
+                </button>
+              ))}
+            </div>
+          </div>
         )}
       </div>
 
@@ -646,11 +710,13 @@ export default function RetailDashboard() {
 
       {/* Mostrar estadísticas o gráfico según la pestaña seleccionada */}
       {showStatistics ? (
-        <Statistics
+        <StatisticsEnhanced
           storeData={storeData}
           selectedStores={selectedStores}
           selectedMetric={selectedMetric}
           viewMode={viewMode}
+          dailyDataFromAPI={dailyDataFromAPI}
+          selectedYear={selectedYear}
         />
       ) : (
         <div className="bg-white p-8 rounded-2xl shadow-2xl border border-gray-200" style={{ height: 450 }} ref={chartContainerRef}>
