@@ -14,7 +14,9 @@
       "Bash(npm start)",
       "Read(//c//**)",
       "Bash(where:*)",
-      "Bash(git fetch:*)"
+      "Bash(git fetch:*)",
+      "WebSearch",
+      "Bash(npm install:*)"
     ],
     "defaultMode": "acceptEdits",
     "additionalDirectories": [
