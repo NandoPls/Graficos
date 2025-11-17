@@ -1,8 +1,8 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import html2canvas from "html2canvas";
 import './setupGlobals';
 import { generatePPT } from './generatePPT';
-import { generateDateBasedComparisonFromWeekly, generateWeeklyDataFromDaily, generateMonthlyDataFromDaily, dataMetadata } from './dailyDataProcessor';
+import DataUploader from './DataUploader';
 import {
   LineChart,
   Line,
@@ -91,17 +91,17 @@ const MONTHS_ORDER = [
   'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
 ];
 
-// Generar datos dinámicamente desde datos diarios
-const weeklyStoreData = generateWeeklyDataFromDaily();
-const initialStoreData = generateMonthlyDataFromDaily();
-
-const WEEKS_ORDER = weeklyStoreData[0].data.map(d => d.week);
-
-
+const WEEKS_ORDER = [];
 
 export default function RetailDashboard() {
+  // Estados para datos cargados desde API
+  const [dailyDataFromAPI, setDailyDataFromAPI] = useState(null);
+  const [dataMetadata, setDataMetadata] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [weeklyStoreData, setWeeklyStoreData] = useState([]);
+  const [initialStoreData, setInitialStoreData] = useState([]);
   const [viewMode, setViewMode] = useState('months');
-  const [storeData, setStoreData] = useState(initialStoreData);
+  const [storeData, setStoreData] = useState([]);
   const [monthsVisible, setMonthsVisible] = useState([
     'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'
   ]);
@@ -114,16 +114,57 @@ export default function RetailDashboard() {
     'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre'
   ]);
   // Estado inicial: todas las tiendas seleccionadas + "Resumen" seleccionada por defecto
-  const [selectedStores, setSelectedStores] = useState(() => {
-    const acc = initialStoreData.reduce((acc, store) => {
-      acc[store.name] = true;
-      return acc;
-    }, {});
-    acc["Resumen"] = true; // Asegura que Resumen esté seleccionada por defecto
-    return acc;
-  });
+  const [selectedStores, setSelectedStores] = useState({});
   // Nuevo estado para tipo de gráfico
   const [chartType, setChartType] = useState('line');
+
+  // Función para cargar datos desde la API
+  const loadDataFromAPI = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch('/api/get-data');
+      const result = await response.json();
+
+      if (result && result.data) {
+        setDailyDataFromAPI(result.data);
+        setDataMetadata(result.metadata);
+
+        // Importar funciones de procesamiento
+        const { generateWeeklyDataFromDaily, generateMonthlyDataFromDaily } = await import('./dataProcessor');
+
+        // Generar datos procesados
+        const weekly = generateWeeklyDataFromDaily(result.data);
+        const monthly = generateMonthlyDataFromDaily(result.data);
+
+        setWeeklyStoreData(weekly);
+        setInitialStoreData(monthly);
+        setStoreData(monthly);
+
+        // Inicializar weeksVisible si hay datos
+        if (weekly.length > 0 && weekly[0].data.length > 0) {
+          const weeksOrder = weekly[0].data.map(d => d.week);
+          setWeeksVisible(weeksOrder.slice(0, 5));
+        }
+
+        // Inicializar selectedStores
+        const initialSelectedStores = {};
+        monthly.forEach(store => {
+          initialSelectedStores[store.name] = true;
+        });
+        initialSelectedStores["Resumen"] = true;
+        setSelectedStores(initialSelectedStores);
+      }
+    } catch (error) {
+      console.error('Error loading data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Cargar datos al montar el componente
+  useEffect(() => {
+    loadDataFromAPI();
+  }, []);
 
   // Lógica de datos para el gráfico según el modo
   let chartData;
@@ -131,8 +172,9 @@ export default function RetailDashboard() {
   
   if (viewMode === 'monthlyComparison') {
     // Modo de comparación mensual hasta fecha límite exacta
-    const allComparisonData = generateDateBasedComparisonFromWeekly(
-      weeklyStoreData, cutoffDay, cutoffMonth, selectedStores, selectedMetric
+    const { generateDateBasedComparisonFromWeekly: generateComparison } = require('./dataProcessor');
+    const allComparisonData = generateComparison(
+      dailyDataFromAPI, weeklyStoreData, cutoffDay, cutoffMonth, selectedStores, selectedMetric
     );
     // Filtrar solo los meses seleccionados
     chartData = allComparisonData.filter(data => selectedMonthsComparison.includes(data.month));
@@ -283,6 +325,17 @@ export default function RetailDashboard() {
     return months[cutoffMonth - 1];
   };
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <div className="text-2xl font-bold text-indigo-900 mb-4">Cargando datos...</div>
+          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-indigo-600 mx-auto"></div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col min-h-screen p-8 bg-gradient-to-br from-indigo-50 via-white to-indigo-100 font-sans">
       <div className="text-center mb-8">
@@ -293,6 +346,9 @@ export default function RetailDashboard() {
           </p>
         )}
       </div>
+
+      <DataUploader onDataUpdated={loadDataFromAPI} />
+
       <div className="bg-white p-8 rounded-2xl shadow-2xl mb-10 border border-gray-200">
         <div className="mb-6 flex gap-4">
           <button
