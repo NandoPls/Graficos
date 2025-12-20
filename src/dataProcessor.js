@@ -265,6 +265,143 @@ export function getAvailableDatesForMonth(month) {
   return datesPerMonth[month] || [];
 }
 
+// Función para generar comparación año vs año anterior (YoY - Year over Year)
+export function generateYearOverYearComparison(yearlyData, year1 = null, year2 = null, viewType = 'monthly', selectedStores = {}, selectedMetric = 'flujo') {
+  if (!yearlyData) return [];
+
+  // Detectar si es estructura antigua (sin años) o nueva (con años)
+  const firstKey = Object.keys(yearlyData)[0];
+  const isOldStructure = firstKey && typeof yearlyData[firstKey] === 'object' && yearlyData[firstKey][1];
+
+  if (isOldStructure) {
+    // No podemos hacer comparación YoY sin múltiples años
+    return [];
+  }
+
+  // Obtener años disponibles ordenados
+  const availableYears = Object.keys(yearlyData).map(Number).sort((a, b) => b - a);
+
+  if (availableYears.length < 2) {
+    // Necesitamos al menos 2 años para comparar
+    return [];
+  }
+
+  // Determinar los dos años a comparar
+  const firstYear = year1 || availableYears[0];
+  const secondYear = year2 || (year1 ? year1 - 1 : availableYears[1]);
+
+  // Verificar que ambos años existan
+  if (!yearlyData[firstYear] || !yearlyData[secondYear]) {
+    return [];
+  }
+
+  // Ordenar años para usar el más reciente primero
+  const year = Math.max(firstYear, secondYear);
+  const previousYear = Math.min(firstYear, secondYear);
+
+  const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+  const comparisonData = [];
+
+  if (viewType === 'monthly') {
+    // Comparación mensual
+    monthNames.forEach((monthName, monthIndex) => {
+      const monthNumber = monthIndex + 1;
+      const dataPoint = { month: monthName };
+
+      // Obtener tiendas a comparar
+      const storesToCompare = Object.keys(selectedStores).filter(
+        storeName => selectedStores[storeName] && storeName !== 'Resumen'
+      );
+
+      // Si no hay tiendas seleccionadas, usar todas
+      if (storesToCompare.length === 0) {
+        storesToCompare.push(...Object.keys(yearlyData[year]));
+      }
+
+      // Procesar cada tienda
+      storesToCompare.forEach(storeName => {
+        // Datos año actual
+        let currentYearTotal = { flujo: 0, boletas: 0 };
+        if (yearlyData[year][storeName] && yearlyData[year][storeName][monthNumber]) {
+          Object.values(yearlyData[year][storeName][monthNumber]).forEach(dayData => {
+            currentYearTotal.flujo += dayData.flujo || 0;
+            currentYearTotal.boletas += dayData.boletas || 0;
+          });
+        }
+
+        // Datos año anterior
+        let previousYearTotal = { flujo: 0, boletas: 0 };
+        if (yearlyData[previousYear][storeName] && yearlyData[previousYear][storeName][monthNumber]) {
+          Object.values(yearlyData[previousYear][storeName][monthNumber]).forEach(dayData => {
+            previousYearTotal.flujo += dayData.flujo || 0;
+            previousYearTotal.boletas += dayData.boletas || 0;
+          });
+        }
+
+        // Calcular conversión
+        const currentConversion = currentYearTotal.flujo > 0
+          ? parseFloat(((currentYearTotal.boletas / currentYearTotal.flujo) * 100).toFixed(1))
+          : 0;
+        const previousConversion = previousYearTotal.flujo > 0
+          ? parseFloat(((previousYearTotal.boletas / previousYearTotal.flujo) * 100).toFixed(1))
+          : 0;
+
+        // Agregar al dataPoint
+        dataPoint[`${storeName} ${year}`] = selectedMetric === 'conversion'
+          ? currentConversion
+          : currentYearTotal[selectedMetric];
+        dataPoint[`${storeName} ${previousYear}`] = selectedMetric === 'conversion'
+          ? previousConversion
+          : previousYearTotal[selectedMetric];
+      });
+
+      // Agregar Resumen si está seleccionado
+      if (selectedStores['Resumen']) {
+        let currentYearResumen = { flujo: 0, boletas: 0 };
+        let previousYearResumen = { flujo: 0, boletas: 0 };
+
+        // Sumar todas las tiendas para el año actual
+        Object.keys(yearlyData[year]).forEach(storeName => {
+          if (yearlyData[year][storeName][monthNumber]) {
+            Object.values(yearlyData[year][storeName][monthNumber]).forEach(dayData => {
+              currentYearResumen.flujo += dayData.flujo || 0;
+              currentYearResumen.boletas += dayData.boletas || 0;
+            });
+          }
+        });
+
+        // Sumar todas las tiendas para el año anterior
+        Object.keys(yearlyData[previousYear]).forEach(storeName => {
+          if (yearlyData[previousYear][storeName][monthNumber]) {
+            Object.values(yearlyData[previousYear][storeName][monthNumber]).forEach(dayData => {
+              previousYearResumen.flujo += dayData.flujo || 0;
+              previousYearResumen.boletas += dayData.boletas || 0;
+            });
+          }
+        });
+
+        const currentConversion = currentYearResumen.flujo > 0
+          ? parseFloat(((currentYearResumen.boletas / currentYearResumen.flujo) * 100).toFixed(1))
+          : 0;
+        const previousConversion = previousYearResumen.flujo > 0
+          ? parseFloat(((previousYearResumen.boletas / previousYearResumen.flujo) * 100).toFixed(1))
+          : 0;
+
+        dataPoint[`Resumen ${year}`] = selectedMetric === 'conversion'
+          ? currentConversion
+          : currentYearResumen[selectedMetric];
+        dataPoint[`Resumen ${previousYear}`] = selectedMetric === 'conversion'
+          ? previousConversion
+          : previousYearResumen[selectedMetric];
+      }
+
+      comparisonData.push(dataPoint);
+    });
+  }
+
+  return comparisonData;
+}
+
 // Función para generar comparación basada en fecha límite (soporta múltiples años)
 export function generateDateBasedComparisonFromWeekly(yearlyData, weeklyData, cutoffDay, cutoffMonth, selectedStores, selectedMetric) {
   if (!yearlyData) return [];

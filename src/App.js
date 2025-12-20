@@ -84,7 +84,8 @@ const CustomizedLabel = (props) => {
 const STORE_COLORS = [
   "#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd",
   "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf",
-  "#aec7e8"
+  "#aec7e8", "#ffbb78", "#98df8a", "#ff9896", "#c5b0d5",
+  "#c49c94", "#f7b6d2", "#c7c7c7", "#dbdb8d", "#9edae5"
 ];
 
 const MONTHS_ORDER = [
@@ -106,6 +107,9 @@ export default function RetailDashboard() {
   const [storeData, setStoreData] = useState([]);
   const [selectedYear, setSelectedYear] = useState(null);
   const [availableYears, setAvailableYears] = useState([]);
+  // Estados para comparación año vs año
+  const [comparisonYear1, setComparisonYear1] = useState(null);
+  const [comparisonYear2, setComparisonYear2] = useState(null);
   const [monthsVisible, setMonthsVisible] = useState([
     'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'
   ]);
@@ -159,6 +163,13 @@ export default function RetailDashboard() {
           setSelectedYear(yearToUse);
         }
 
+        // Inicializar años de comparación si no están establecidos
+        if (!comparisonYear1 && years.length > 0) {
+          const sortedYears = [...years].sort((a, b) => b - a);
+          setComparisonYear1(sortedYears[0] || yearToUse);
+          setComparisonYear2(sortedYears[1] || (sortedYears[0] - 1));
+        }
+
         // Generar datos procesados para el año seleccionado
         const weekly = generateWeeklyDataFromDaily(result.data, yearToUse);
         const monthly = generateMonthlyDataFromDaily(result.data, yearToUse);
@@ -207,8 +218,20 @@ export default function RetailDashboard() {
   // Lógica de datos para el gráfico según el modo
   let chartData;
   let visibleCategories;
-  
-  if (viewMode === 'monthlyComparison') {
+
+  if (viewMode === 'yearOverYear') {
+    // Modo de comparación año vs año anterior
+    const { generateYearOverYearComparison } = require('./dataProcessor');
+    chartData = generateYearOverYearComparison(
+      dailyDataFromAPI,
+      comparisonYear1,
+      comparisonYear2,
+      'monthly',
+      selectedStores,
+      selectedMetric
+    );
+    visibleCategories = chartData.map(d => d.month);
+  } else if (viewMode === 'monthlyComparison') {
     // Modo de comparación mensual hasta fecha límite exacta
     const { generateDateBasedComparisonFromWeekly: generateComparison } = require('./dataProcessor');
     const allComparisonData = generateComparison(
@@ -396,9 +419,9 @@ export default function RetailDashboard() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen p-8 bg-gradient-to-br from-indigo-50 via-white to-indigo-100 font-sans">
+    <div className="flex flex-col min-h-screen p-8 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 font-sans">
       <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold text-indigo-900 tracking-tight drop-shadow-sm">
+        <h1 className="text-5xl font-extrabold bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 bg-clip-text text-transparent tracking-tight drop-shadow-lg">
           Dashboard de Evolución de Tiendas - {selectedYear || new Date().getFullYear()}
         </h1>
         {dataMetadata && (
@@ -436,13 +459,15 @@ export default function RetailDashboard() {
       <DataUploader onDataUpdated={loadDataFromAPI} />
 
       <div className="bg-white p-8 rounded-2xl shadow-2xl mb-10 border border-gray-200">
-        <div className="mb-6 flex gap-4">
+        <div className="mb-6 flex gap-4 flex-wrap">
           <button
             type="button"
             onClick={() => { handleModeChange('months'); setShowStatistics(false); }}
             className={
-              `px-4 py-2 rounded-lg font-semibold ` +
-              (viewMode === 'months' && !showStatistics ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-800')
+              `px-4 py-2 rounded-lg font-semibold transition-all duration-200 ` +
+              (viewMode === 'months' && !showStatistics
+                ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg scale-105'
+                : 'bg-gray-200 text-gray-800 hover:bg-gray-300 hover:scale-105')
             }
           >
             Meses
@@ -451,8 +476,10 @@ export default function RetailDashboard() {
             type="button"
             onClick={() => { handleModeChange('weeks'); setShowStatistics(false); }}
             className={
-              `px-4 py-2 rounded-lg font-semibold ` +
-              (viewMode === 'weeks' && !showStatistics ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-800')
+              `px-4 py-2 rounded-lg font-semibold transition-all duration-200 ` +
+              (viewMode === 'weeks' && !showStatistics
+                ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg scale-105'
+                : 'bg-gray-200 text-gray-800 hover:bg-gray-300 hover:scale-105')
             }
           >
             Semanas
@@ -461,18 +488,34 @@ export default function RetailDashboard() {
             type="button"
             onClick={() => { handleModeChange('monthlyComparison'); setShowStatistics(false); }}
             className={
-              `px-4 py-2 rounded-lg font-semibold ` +
-              (viewMode === 'monthlyComparison' && !showStatistics ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-800')
+              `px-4 py-2 rounded-lg font-semibold transition-all duration-200 ` +
+              (viewMode === 'monthlyComparison' && !showStatistics
+                ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg scale-105'
+                : 'bg-gray-200 text-gray-800 hover:bg-gray-300 hover:scale-105')
             }
           >
             Comparación Mensual
           </button>
           <button
             type="button"
+            onClick={() => { handleModeChange('yearOverYear'); setShowStatistics(false); }}
+            className={
+              `px-4 py-2 rounded-lg font-semibold transition-all duration-200 ` +
+              (viewMode === 'yearOverYear' && !showStatistics
+                ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg scale-105'
+                : 'bg-gray-200 text-gray-800 hover:bg-gray-300 hover:scale-105')
+            }
+          >
+            📅 Año vs Año
+          </button>
+          <button
+            type="button"
             onClick={() => setShowStatistics(true)}
             className={
-              `px-4 py-2 rounded-lg font-semibold ` +
-              (showStatistics ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-800')
+              `px-4 py-2 rounded-lg font-semibold transition-all duration-200 ` +
+              (showStatistics
+                ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg scale-105'
+                : 'bg-gray-200 text-gray-800 hover:bg-gray-300 hover:scale-105')
             }
           >
             📊 Estadísticas
@@ -654,58 +697,105 @@ export default function RetailDashboard() {
           </div>
         )}
         
-        <div className="mb-6">
-          <label className="block text-base font-semibold text-gray-800 mb-3">
-            {viewMode === 'months' 
-              ? 'Seleccionar Meses:' 
-              : viewMode === 'weeks' 
-                ? 'Seleccionar Semanas:'
-                : 'Meses a comparar:'}
-          </label>
-          <div className="flex flex-wrap gap-4">
-            {viewMode === 'months'
-              ? MONTHS_ORDER.map((month, index) => (
-                  <label key={index} className="flex items-center cursor-pointer hover:text-indigo-700">
-                    <input
-                      type="checkbox"
-                      name="month"
-                      value={month}
-                      checked={monthsVisible.includes(month)}
-                      onChange={() => handleMonthChange(month)}
-                      className="h-4 w-4 text-indigo-600 border-gray-400 rounded-lg focus:ring-indigo-500 transition duration-150 hover:scale-110"
-                    />
-                    <span className="ml-2 text-sm text-gray-800">{month}</span>
-                  </label>
-                ))
-              : viewMode === 'weeks'
-                ? WEEKS_ORDER.map((week, index) => (
+        {/* Solo mostrar selector de meses/semanas si NO está en modo yearOverYear */}
+        {viewMode !== 'yearOverYear' && (
+          <div className="mb-6">
+            <label className="block text-base font-semibold text-gray-800 mb-3">
+              {viewMode === 'months'
+                ? 'Seleccionar Meses:'
+                : viewMode === 'weeks'
+                  ? 'Seleccionar Semanas:'
+                  : 'Meses a comparar:'}
+            </label>
+            <div className="flex flex-wrap gap-4">
+              {viewMode === 'months'
+                ? MONTHS_ORDER.map((month, index) => (
                     <label key={index} className="flex items-center cursor-pointer hover:text-indigo-700">
                       <input
                         type="checkbox"
-                        name="week"
-                        value={week}
-                        checked={weeksVisible.includes(week)}
-                        onChange={() => handleWeekChange(week)}
-                        className="h-4 w-4 text-indigo-600 border-gray-400 rounded-lg focus:ring-indigo-500 transition duration-150 hover:scale-110"
-                      />
-                      <span className="ml-2 text-sm text-gray-800">{week}</span>
-                    </label>
-                  ))
-                : // Modo de comparación mensual - checkboxes para seleccionar meses
-                  MONTHS_ORDER.map((month, index) => (
-                    <label key={index} className="flex items-center cursor-pointer hover:text-indigo-700">
-                      <input
-                        type="checkbox"
-                        checked={selectedMonthsComparison.includes(month)}
-                        onChange={() => handleMonthComparisonToggle(month)}
+                        name="month"
+                        value={month}
+                        checked={monthsVisible.includes(month)}
+                        onChange={() => handleMonthChange(month)}
                         className="h-4 w-4 text-indigo-600 border-gray-400 rounded-lg focus:ring-indigo-500 transition duration-150 hover:scale-110"
                       />
                       <span className="ml-2 text-sm text-gray-800">{month}</span>
                     </label>
                   ))
-            }
+                : viewMode === 'weeks'
+                  ? WEEKS_ORDER.map((week, index) => (
+                      <label key={index} className="flex items-center cursor-pointer hover:text-indigo-700">
+                        <input
+                          type="checkbox"
+                          name="week"
+                          value={week}
+                          checked={weeksVisible.includes(week)}
+                          onChange={() => handleWeekChange(week)}
+                          className="h-4 w-4 text-indigo-600 border-gray-400 rounded-lg focus:ring-indigo-500 transition duration-150 hover:scale-110"
+                        />
+                        <span className="ml-2 text-sm text-gray-800">{week}</span>
+                      </label>
+                    ))
+                  : // Modo de comparación mensual - checkboxes para seleccionar meses
+                    MONTHS_ORDER.map((month, index) => (
+                      <label key={index} className="flex items-center cursor-pointer hover:text-indigo-700">
+                        <input
+                          type="checkbox"
+                          checked={selectedMonthsComparison.includes(month)}
+                          onChange={() => handleMonthComparisonToggle(month)}
+                          className="h-4 w-4 text-indigo-600 border-gray-400 rounded-lg focus:ring-indigo-500 transition duration-150 hover:scale-110"
+                        />
+                        <span className="ml-2 text-sm text-gray-800">{month}</span>
+                      </label>
+                    ))
+              }
+            </div>
           </div>
-        </div>
+        )}
+
+        {/* Información y selectores para modo Año vs Año */}
+        {viewMode === 'yearOverYear' && (
+          <div className="mb-6">
+            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-blue-500 p-5 rounded-lg shadow-sm mb-4">
+              <p className="text-sm text-blue-800 mb-3">
+                📊 <strong>Modo Comparación Año vs Año:</strong> Selecciona los años que deseas comparar. Cada tienda aparece con dos líneas/barras: una para cada año.
+              </p>
+              <div className="flex gap-6 items-center">
+                <div className="flex-1">
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Primer Año:
+                  </label>
+                  <select
+                    value={comparisonYear1 || ''}
+                    onChange={(e) => setComparisonYear1(Number(e.target.value))}
+                    className="w-full p-2 border-2 border-indigo-300 rounded-lg text-sm font-semibold bg-white hover:border-indigo-500 focus:ring-2 focus:ring-indigo-500 transition"
+                  >
+                    {availableYears.map(year => (
+                      <option key={year} value={year}>{year}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="text-2xl font-bold text-indigo-600 pt-6">
+                  vs
+                </div>
+                <div className="flex-1">
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Segundo Año:
+                  </label>
+                  <select
+                    value={comparisonYear2 || ''}
+                    onChange={(e) => setComparisonYear2(Number(e.target.value))}
+                    className="w-full p-2 border-2 border-purple-300 rounded-lg text-sm font-semibold bg-white hover:border-purple-500 focus:ring-2 focus:ring-purple-500 transition"
+                  >
+                    {availableYears.map(year => (
+                      <option key={year} value={year}>{year}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Mostrar estadísticas o gráfico según la pestaña seleccionada */}
@@ -718,44 +808,53 @@ export default function RetailDashboard() {
           dailyDataFromAPI={dailyDataFromAPI}
           selectedYear={selectedYear}
         />
-      ) : (
-        <div className="bg-white p-8 rounded-2xl shadow-2xl border border-gray-200" style={{ height: 450 }} ref={chartContainerRef}>
-          <ResponsiveContainer width="100%" height="100%">
-          {chartType === 'line' && (
-            <LineChart data={chartData} margin={{ top: 25, right: 30, left: 20, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey={viewMode === 'months' || viewMode === 'monthlyComparison' ? 'month' : 'week'} />
-              <YAxis
-                label={{
-                  value:
-                    selectedMetric === "flujo"
-                      ? "Flujo"
-                      : selectedMetric === "boletas"
-                      ? "Boletas"
-                      : "Conversión (%)",
-                  angle: -90,
-                  position: 'insideLeft'
-                }}
-                tickFormatter={value =>
-                  selectedMetric === 'conversion'
-                    ? (value === null || value === undefined || value === '' ? '' : `${value}%`)
-                    : formatNumberWithThousands(value)
-                }
-              />
-              <Tooltip
-                formatter={value =>
-                  selectedMetric === 'conversion'
-                    ? (value === null || value === undefined || value === '' ? '' : `${value}%`)
-                    : formatNumberWithThousands(value)
-                }
-              />
-              <Legend />
-              {storeData.map((store, index) => (
-                selectedStores[store.name] && (
+      ) : (() => {
+        // En modo yearOverYear, obtener dinámicamente las claves de datos
+        let dataKeys = [];
+        if (viewMode === 'yearOverYear' && chartData.length > 0) {
+          const firstDataPoint = chartData[0];
+          dataKeys = Object.keys(firstDataPoint).filter(key => key !== 'month' && key !== 'week');
+        } else {
+          dataKeys = storeData.filter(store => selectedStores[store.name]).map(store => store.name);
+        }
+
+        return (
+          <div className="bg-white p-8 rounded-2xl shadow-2xl border border-gray-200" style={{ height: 450 }} ref={chartContainerRef}>
+            <ResponsiveContainer width="100%" height="100%">
+            {chartType === 'line' && (
+              <LineChart data={chartData} margin={{ top: 25, right: 30, left: 20, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey={viewMode === 'months' || viewMode === 'monthlyComparison' || viewMode === 'yearOverYear' ? 'month' : 'week'} />
+                <YAxis
+                  label={{
+                    value:
+                      selectedMetric === "flujo"
+                        ? "Flujo"
+                        : selectedMetric === "boletas"
+                        ? "Boletas"
+                        : "Conversión (%)",
+                    angle: -90,
+                    position: 'insideLeft'
+                  }}
+                  tickFormatter={value =>
+                    selectedMetric === 'conversion'
+                      ? (value === null || value === undefined || value === '' ? '' : `${value}%`)
+                      : formatNumberWithThousands(value)
+                  }
+                />
+                <Tooltip
+                  formatter={value =>
+                    selectedMetric === 'conversion'
+                      ? (value === null || value === undefined || value === '' ? '' : `${value}%`)
+                      : formatNumberWithThousands(value)
+                  }
+                />
+                <Legend />
+                {dataKeys.map((key, index) => (
                   <Line
-                    key={store.name}
+                    key={key}
                     type="monotone"
-                    dataKey={store.name}
+                    dataKey={key}
                     stroke={STORE_COLORS[index % STORE_COLORS.length]}
                     activeDot={{ r: 8 }}
                     strokeWidth={2}
@@ -767,14 +866,13 @@ export default function RetailDashboard() {
                       />
                     }
                   />
-                )
-              ))}
+                ))}
             </LineChart>
           )}
           {chartType === 'bar' && (
             <BarChart data={chartData} margin={{ top: 30, right: 30, left: 20, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey={viewMode === 'months' || viewMode === 'monthlyComparison' ? 'month' : 'week'} />
+              <XAxis dataKey={viewMode === 'months' || viewMode === 'monthlyComparison' || viewMode === 'yearOverYear' ? 'month' : 'week'} />
               <YAxis
                 label={{
                   value:
@@ -800,33 +898,31 @@ export default function RetailDashboard() {
                 }
               />
               <Legend />
-              {storeData.map((store, index) => (
-                selectedStores[store.name] && (
-                  <Bar
-                    key={store.name}
-                    dataKey={store.name}
-                    fill={STORE_COLORS[index % STORE_COLORS.length]}
-                    radius={[4, 4, 0, 0]}
-                    label={
-                      // Se debe pasar chartType y selectedMetric como props
-                      (props) => (
-                        <CustomizedLabel
-                          {...props}
-                          stroke={STORE_COLORS[index % STORE_COLORS.length]}
-                          chartType="bar"
-                          selectedMetric={selectedMetric}
-                        />
-                      )
-                    }
-                  />
-                )
+              {dataKeys.map((key, index) => (
+                <Bar
+                  key={key}
+                  dataKey={key}
+                  fill={STORE_COLORS[index % STORE_COLORS.length]}
+                  radius={[4, 4, 0, 0]}
+                  label={
+                    // Se debe pasar chartType y selectedMetric como props
+                    (props) => (
+                      <CustomizedLabel
+                        {...props}
+                        stroke={STORE_COLORS[index % STORE_COLORS.length]}
+                        chartType="bar"
+                        selectedMetric={selectedMetric}
+                      />
+                    )
+                  }
+                />
               ))}
             </BarChart>
           )}
           {chartType === 'area' && (
             <AreaChart data={chartData} margin={{ top: 30, right: 30, left: 20, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey={viewMode === 'months' || viewMode === 'monthlyComparison' ? 'month' : 'week'} />
+              <XAxis dataKey={viewMode === 'months' || viewMode === 'monthlyComparison' || viewMode === 'yearOverYear' ? 'month' : 'week'} />
               <YAxis
                 label={{
                   value:
@@ -852,31 +948,30 @@ export default function RetailDashboard() {
                 }
               />
               <Legend />
-              {storeData.map((store, index) => (
-                selectedStores[store.name] && (
-                  <Area
-                    key={store.name}
-                    type="monotone"
-                    dataKey={store.name}
-                    stroke={STORE_COLORS[index % STORE_COLORS.length]}
-                    fill={STORE_COLORS[index % STORE_COLORS.length]}
-                    fillOpacity={0.18}
-                    strokeWidth={2}
-                    label={
-                      <CustomizedLabel
-                        stroke={STORE_COLORS[index % STORE_COLORS.length]}
-                        chartType="area"
-                        selectedMetric={selectedMetric}
-                      />
-                    }
-                  />
-                )
+              {dataKeys.map((key, index) => (
+                <Area
+                  key={key}
+                  type="monotone"
+                  dataKey={key}
+                  stroke={STORE_COLORS[index % STORE_COLORS.length]}
+                  fill={STORE_COLORS[index % STORE_COLORS.length]}
+                  fillOpacity={0.18}
+                  strokeWidth={2}
+                  label={
+                    <CustomizedLabel
+                      stroke={STORE_COLORS[index % STORE_COLORS.length]}
+                      chartType="area"
+                      selectedMetric={selectedMetric}
+                    />
+                  }
+                />
               ))}
             </AreaChart>
           )}
         </ResponsiveContainer>
       </div>
-      )}
+        );
+      })()}
     </div>
   );
 }
