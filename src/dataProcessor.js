@@ -313,13 +313,17 @@ export function generateYearOverYearComparison(yearlyData, year1 = null, year2 =
         storeName => selectedStores[storeName] && storeName !== 'Resumen'
       );
 
-      // Si no hay tiendas seleccionadas, usar todas
-      if (storesToCompare.length === 0) {
+      // Verificar si solo "Resumen" está seleccionado
+      const onlyResumenSelected = selectedStores['Resumen'] && storesToCompare.length === 0;
+
+      // Si no hay tiendas seleccionadas y tampoco Resumen, usar todas
+      if (storesToCompare.length === 0 && !selectedStores['Resumen']) {
         storesToCompare.push(...Object.keys(yearlyData[year]));
       }
 
-      // Procesar cada tienda
-      storesToCompare.forEach(storeName => {
+      // Procesar cada tienda SOLO si no está en modo "solo Resumen"
+      if (!onlyResumenSelected) {
+        storesToCompare.forEach(storeName => {
         // Datos año actual
         let currentYearTotal = { flujo: 0, boletas: 0 };
         if (yearlyData[year][storeName] && yearlyData[year][storeName][monthNumber]) {
@@ -353,7 +357,8 @@ export function generateYearOverYearComparison(yearlyData, year1 = null, year2 =
         dataPoint[`${storeName} ${previousYear}`] = selectedMetric === 'conversion'
           ? previousConversion
           : previousYearTotal[selectedMetric];
-      });
+        });
+      }
 
       // Agregar Resumen si está seleccionado
       if (selectedStores['Resumen']) {

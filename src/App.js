@@ -110,6 +110,7 @@ export default function RetailDashboard() {
   // Estados para comparación año vs año
   const [comparisonYear1, setComparisonYear1] = useState(null);
   const [comparisonYear2, setComparisonYear2] = useState(null);
+  const [yoyMonthsVisible, setYoyMonthsVisible] = useState(MONTHS_ORDER); // Todos los meses por defecto
   const [monthsVisible, setMonthsVisible] = useState([
     'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'
   ]);
@@ -222,7 +223,7 @@ export default function RetailDashboard() {
   if (viewMode === 'yearOverYear') {
     // Modo de comparación año vs año anterior
     const { generateYearOverYearComparison } = require('./dataProcessor');
-    chartData = generateYearOverYearComparison(
+    const allYoyData = generateYearOverYearComparison(
       dailyDataFromAPI,
       comparisonYear1,
       comparisonYear2,
@@ -230,6 +231,8 @@ export default function RetailDashboard() {
       selectedStores,
       selectedMetric
     );
+    // Filtrar solo los meses seleccionados
+    chartData = allYoyData.filter(data => yoyMonthsVisible.includes(data.month));
     visibleCategories = chartData.map(d => d.month);
   } else if (viewMode === 'monthlyComparison') {
     // Modo de comparación mensual hasta fecha límite exacta
@@ -373,6 +376,16 @@ export default function RetailDashboard() {
 
   const handleMonthComparisonToggle = (month) => {
     setSelectedMonthsComparison(prev => {
+      if (prev.includes(month)) {
+        return prev.filter(m => m !== month);
+      } else {
+        return [...prev, month];
+      }
+    });
+  };
+
+  const handleYoyMonthToggle = (month) => {
+    setYoyMonthsVisible(prev => {
       if (prev.includes(month)) {
         return prev.filter(m => m !== month);
       } else {
@@ -792,6 +805,26 @@ export default function RetailDashboard() {
                     ))}
                   </select>
                 </div>
+              </div>
+            </div>
+
+            {/* Selector de meses para año vs año */}
+            <div className="mb-4">
+              <label className="block text-base font-semibold text-gray-800 mb-3">
+                Seleccionar Meses a Comparar:
+              </label>
+              <div className="flex flex-wrap gap-4">
+                {MONTHS_ORDER.map((month, index) => (
+                  <label key={index} className="flex items-center cursor-pointer hover:text-indigo-700">
+                    <input
+                      type="checkbox"
+                      checked={yoyMonthsVisible.includes(month)}
+                      onChange={() => handleYoyMonthToggle(month)}
+                      className="h-4 w-4 text-indigo-600 border-gray-400 rounded-lg focus:ring-indigo-500 transition duration-150 hover:scale-110"
+                    />
+                    <span className="ml-2 text-sm text-gray-800">{month}</span>
+                  </label>
+                ))}
               </div>
             </div>
           </div>
