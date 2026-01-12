@@ -504,23 +504,23 @@ export function generateDateBasedComparisonFromWeekly(yearlyData, weeklyData, cu
 }
 
 // Función para comparar dos años específicos hasta un día del año
-export function generateYearToYearDayComparison(yearlyData, year1, year2, cutoffMonth, cutoffDay, selectedStores, selectedMetric) {
+export function generateYearToYearDayComparison(yearlyData, year1, year2, selectedMonths, cutoffDay, selectedStores, selectedMetric) {
   if (!yearlyData || !yearlyData[year1] || !yearlyData[year2]) return [];
 
   const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
   const comparisonData = [];
 
-  // Para cada mes, comparar los datos hasta el día límite
+  // Para cada mes seleccionado, comparar los datos hasta el día límite
   monthNames.forEach((monthName, monthIndex) => {
     const monthNumber = monthIndex + 1;
     const dataPoint = { month: monthName };
 
-    // No incluir meses posteriores al mes límite
-    if (monthNumber > cutoffMonth) {
+    // Solo incluir meses que estén seleccionados
+    if (!selectedMonths.includes(monthName)) {
       return;
     }
 
-    // Para TODOS los meses hasta el mes límite, usar el mismo cutoffDay
+    // Para TODOS los meses seleccionados, usar el mismo cutoffDay
     const maxDay = cutoffDay;
 
     // Obtener tiendas a comparar

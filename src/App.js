@@ -122,9 +122,9 @@ export default function RetailDashboard() {
   const [selectedMonthsComparison, setSelectedMonthsComparison] = useState([
     'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre'
   ]);
-  // Estado para comparación año vs año por día
+  // Estado para comparación anual por día
   const [yearComparisonDay, setYearComparisonDay] = useState(12); // Día inicial
-  const [yearComparisonMonth, setYearComparisonMonth] = useState(1); // Enero
+  const [selectedMonthsAnnual, setSelectedMonthsAnnual] = useState(['Enero']); // Meses seleccionados para comparación anual
   const [dayComparisonYear1, setDayComparisonYear1] = useState(null); // Año 1 para comparación por día
   const [dayComparisonYear2, setDayComparisonYear2] = useState(null); // Año 2 para comparación por día
   // Estado inicial: todas las tiendas seleccionadas + "Resumen" seleccionada por defecto
@@ -232,28 +232,14 @@ export default function RetailDashboard() {
   let chartData;
   let visibleCategories;
 
-  if (viewMode === 'yearOverYear') {
-    // Modo de comparación año vs año anterior
-    const { generateYearOverYearComparison } = require('./dataProcessor');
-    const allYoyData = generateYearOverYearComparison(
-      dailyDataFromAPI,
-      comparisonYear1,
-      comparisonYear2,
-      'monthly',
-      selectedStores,
-      selectedMetric
-    );
-    // Filtrar solo los meses seleccionados
-    chartData = allYoyData.filter(data => yoyMonthsVisible.includes(data.month));
-    visibleCategories = chartData.map(d => d.month);
-  } else if (viewMode === 'yearComparisonByDay') {
-    // Modo de comparación año vs año hasta un día específico
+  if (viewMode === 'yearComparisonByDay') {
+    // Modo de comparación anual por día
     const { generateYearToYearDayComparison } = require('./dataProcessor');
     chartData = generateYearToYearDayComparison(
       dailyDataFromAPI,
       dayComparisonYear1,
       dayComparisonYear2,
-      yearComparisonMonth,
+      selectedMonthsAnnual,
       yearComparisonDay,
       selectedStores,
       selectedMetric
@@ -536,18 +522,6 @@ export default function RetailDashboard() {
           </button>
           <button
             type="button"
-            onClick={() => { handleModeChange('yearOverYear'); setShowStatistics(false); }}
-            className={
-              `px-4 py-2 rounded-lg font-semibold transition-all duration-200 ` +
-              (viewMode === 'yearOverYear' && !showStatistics
-                ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg scale-105'
-                : 'bg-gray-200 text-gray-800 hover:bg-gray-300 hover:scale-105')
-            }
-          >
-            📅 Año vs Año
-          </button>
-          <button
-            type="button"
             onClick={() => { handleModeChange('yearComparisonByDay'); setShowStatistics(false); }}
             className={
               `px-4 py-2 rounded-lg font-semibold transition-all duration-200 ` +
@@ -556,7 +530,7 @@ export default function RetailDashboard() {
                 : 'bg-gray-200 text-gray-800 hover:bg-gray-300 hover:scale-105')
             }
           >
-            🔄 Comparación por Día
+            📊 Comparación Anual
           </button>
           <button
             type="button"
@@ -788,62 +762,69 @@ export default function RetailDashboard() {
                 </div>
               </div>
               <p className="text-xs text-blue-700">
-                ✅ En cada mes, desde enero hasta {['', 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'][yearComparisonMonth]}, solo se considerarán los datos desde el día 1 hasta el día {yearComparisonDay}.
+                ✅ En cada mes seleccionado, solo se considerarán los datos desde el día 1 hasta el día {yearComparisonDay}.
               </p>
               <p className="text-xs text-blue-600 mt-1 font-semibold">
                 Ejemplo: Si seleccionas día 12, verás Enero 1-12, Febrero 1-12, Marzo 1-12, etc.
               </p>
             </div>
-            <label className="block text-base font-semibold text-gray-800 mb-3">
-              Comparar hasta el día: {yearComparisonDay} de {['', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'][yearComparisonMonth]}
-            </label>
-            <div className="flex gap-4 items-center">
-              <div className="flex-1">
-                <label className="block text-sm text-gray-600 mb-1">Día:</label>
-                <input
-                  type="range"
-                  min="1"
-                  max="31"
-                  value={yearComparisonDay}
-                  onChange={(e) => setYearComparisonDay(parseInt(e.target.value))}
-                  className="w-full h-2 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-lg appearance-none cursor-pointer"
-                />
-                <div className="flex justify-between text-xs text-gray-500 mt-1">
-                  <span>1</span>
-                  <span className="font-bold text-indigo-600">{yearComparisonDay}</span>
-                  <span>31</span>
-                </div>
-              </div>
-              <div className="w-32">
-                <label className="block text-sm text-gray-600 mb-1">Mes límite:</label>
-                <select
-                  value={yearComparisonMonth}
-                  onChange={(e) => setYearComparisonMonth(parseInt(e.target.value))}
-                  className="w-full p-2 border-2 border-indigo-300 rounded-lg text-sm font-semibold bg-white hover:border-indigo-500 focus:ring-2 focus:ring-indigo-500 transition"
-                >
-                  <option value={1}>Enero</option>
-                  <option value={2}>Febrero</option>
-                  <option value={3}>Marzo</option>
-                  <option value={4}>Abril</option>
-                  <option value={5}>Mayo</option>
-                  <option value={6}>Junio</option>
-                  <option value={7}>Julio</option>
-                  <option value={8}>Agosto</option>
-                  <option value={9}>Septiembre</option>
-                  <option value={10}>Octubre</option>
-                  <option value={11}>Noviembre</option>
-                  <option value={12}>Diciembre</option>
-                </select>
+
+            {/* Selector de día */}
+            <div className="mb-4">
+              <label className="block text-base font-semibold text-gray-800 mb-3">
+                Seleccionar día límite: {yearComparisonDay}
+              </label>
+              <input
+                type="range"
+                min="1"
+                max="31"
+                value={yearComparisonDay}
+                onChange={(e) => setYearComparisonDay(parseInt(e.target.value))}
+                className="w-full h-2 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-lg appearance-none cursor-pointer"
+              />
+              <div className="flex justify-between text-xs text-gray-500 mt-1">
+                <span>1</span>
+                <span className="font-bold text-indigo-600">{yearComparisonDay}</span>
+                <span>31</span>
               </div>
             </div>
+
+            {/* Selector de meses con checkboxes */}
+            <div className="mb-4">
+              <label className="block text-base font-semibold text-gray-800 mb-3">
+                Seleccionar meses a comparar:
+              </label>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                {MONTHS_ORDER.map((month, index) => (
+                  <label key={index} className="flex items-center cursor-pointer hover:bg-indigo-50 p-2 rounded-lg transition">
+                    <input
+                      type="checkbox"
+                      checked={selectedMonthsAnnual.includes(month)}
+                      onChange={() => {
+                        setSelectedMonthsAnnual(prev => {
+                          if (prev.includes(month)) {
+                            return prev.filter(m => m !== month);
+                          } else {
+                            return [...prev, month];
+                          }
+                        });
+                      }}
+                      className="h-4 w-4 text-indigo-600 border-gray-400 rounded focus:ring-indigo-500 transition duration-150 hover:scale-110"
+                    />
+                    <span className="ml-2 text-sm text-gray-800 font-medium">{month}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
             <p className="text-sm text-purple-600 mt-3 font-semibold">
-              📊 Comparando {dayComparisonYear1} vs {dayComparisonYear2}: desde enero hasta {['', 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'][yearComparisonMonth]} (días 1 al {yearComparisonDay} en cada mes)
+              📊 Comparando {dayComparisonYear1} vs {dayComparisonYear2}: {selectedMonthsAnnual.length} mes(es) seleccionado(s) (días 1 al {yearComparisonDay} en cada mes)
             </p>
           </div>
         )}
         
-        {/* Solo mostrar selector de meses/semanas si NO está en modo yearOverYear ni yearComparisonByDay */}
-        {viewMode !== 'yearOverYear' && viewMode !== 'yearComparisonByDay' && (
+        {/* Solo mostrar selector de meses/semanas si NO está en modo yearComparisonByDay */}
+        {viewMode !== 'yearComparisonByDay' && (
           <div className="mb-6">
             <label className="block text-base font-semibold text-gray-800 mb-3">
               {viewMode === 'months'
@@ -898,69 +879,6 @@ export default function RetailDashboard() {
           </div>
         )}
 
-        {/* Información y selectores para modo Año vs Año */}
-        {viewMode === 'yearOverYear' && (
-          <div className="mb-6">
-            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-blue-500 p-5 rounded-lg shadow-sm mb-4">
-              <p className="text-sm text-blue-800 mb-3">
-                📊 <strong>Modo Comparación Año vs Año:</strong> Selecciona los años que deseas comparar. Cada tienda aparece con dos líneas/barras: una para cada año.
-              </p>
-              <div className="flex gap-6 items-center">
-                <div className="flex-1">
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Primer Año:
-                  </label>
-                  <select
-                    value={comparisonYear1 || ''}
-                    onChange={(e) => setComparisonYear1(Number(e.target.value))}
-                    className="w-full p-2 border-2 border-indigo-300 rounded-lg text-sm font-semibold bg-white hover:border-indigo-500 focus:ring-2 focus:ring-indigo-500 transition"
-                  >
-                    {availableYears.map(year => (
-                      <option key={year} value={year}>{year}</option>
-                    ))}
-                  </select>
-                </div>
-                <div className="text-2xl font-bold text-indigo-600 pt-6">
-                  vs
-                </div>
-                <div className="flex-1">
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
-                    Segundo Año:
-                  </label>
-                  <select
-                    value={comparisonYear2 || ''}
-                    onChange={(e) => setComparisonYear2(Number(e.target.value))}
-                    className="w-full p-2 border-2 border-purple-300 rounded-lg text-sm font-semibold bg-white hover:border-purple-500 focus:ring-2 focus:ring-purple-500 transition"
-                  >
-                    {availableYears.map(year => (
-                      <option key={year} value={year}>{year}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            {/* Selector de meses para año vs año */}
-            <div className="mb-4">
-              <label className="block text-base font-semibold text-gray-800 mb-3">
-                Seleccionar Meses a Comparar:
-              </label>
-              <div className="flex flex-wrap gap-4">
-                {MONTHS_ORDER.map((month, index) => (
-                  <label key={index} className="flex items-center cursor-pointer hover:text-indigo-700">
-                    <input
-                      type="checkbox"
-                      checked={yoyMonthsVisible.includes(month)}
-                      onChange={() => handleYoyMonthToggle(month)}
-                      className="h-4 w-4 text-indigo-600 border-gray-400 rounded-lg focus:ring-indigo-500 transition duration-150 hover:scale-110"
-                    />
-                    <span className="ml-2 text-sm text-gray-800">{month}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
       </div>
 
       {/* Mostrar estadísticas o gráfico según la pestaña seleccionada */}
@@ -974,9 +892,9 @@ export default function RetailDashboard() {
           selectedYear={selectedYear}
         />
       ) : (() => {
-        // En modo yearOverYear y yearComparisonByDay, obtener dinámicamente las claves de datos
+        // En modo yearComparisonByDay, obtener dinámicamente las claves de datos
         let dataKeys = [];
-        if ((viewMode === 'yearOverYear' || viewMode === 'yearComparisonByDay') && chartData.length > 0) {
+        if (viewMode === 'yearComparisonByDay' && chartData.length > 0) {
           const firstDataPoint = chartData[0];
           dataKeys = Object.keys(firstDataPoint).filter(key => key !== 'month' && key !== 'week');
         } else {
@@ -989,7 +907,7 @@ export default function RetailDashboard() {
             {chartType === 'line' && (
               <LineChart data={chartData} margin={{ top: 25, right: 30, left: 20, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey={viewMode === 'months' || viewMode === 'monthlyComparison' || viewMode === 'yearOverYear' || viewMode === 'yearComparisonByDay' ? 'month' : 'week'} />
+                <XAxis dataKey={viewMode === 'months' || viewMode === 'monthlyComparison' || viewMode === 'yearComparisonByDay' ? 'month' : 'week'} />
                 <YAxis
                   label={{
                     value:
@@ -1037,7 +955,7 @@ export default function RetailDashboard() {
           {chartType === 'bar' && (
             <BarChart data={chartData} margin={{ top: 30, right: 30, left: 20, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey={viewMode === 'months' || viewMode === 'monthlyComparison' || viewMode === 'yearOverYear' || viewMode === 'yearComparisonByDay' ? 'month' : 'week'} />
+              <XAxis dataKey={viewMode === 'months' || viewMode === 'monthlyComparison' || viewMode === 'yearComparisonByDay' ? 'month' : 'week'} />
               <YAxis
                 label={{
                   value:
@@ -1087,7 +1005,7 @@ export default function RetailDashboard() {
           {chartType === 'area' && (
             <AreaChart data={chartData} margin={{ top: 30, right: 30, left: 20, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey={viewMode === 'months' || viewMode === 'monthlyComparison' || viewMode === 'yearOverYear' || viewMode === 'yearComparisonByDay' ? 'month' : 'week'} />
+              <XAxis dataKey={viewMode === 'months' || viewMode === 'monthlyComparison' || viewMode === 'yearComparisonByDay' ? 'month' : 'week'} />
               <YAxis
                 label={{
                   value:
