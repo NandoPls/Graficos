@@ -788,8 +788,10 @@ export default function RetailDashboard() {
                 </div>
               </div>
               <p className="text-xs text-blue-700">
-                Se compararán todos los meses desde enero hasta {['', 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'][yearComparisonMonth]},
-                considerando solo los datos hasta el día {yearComparisonDay} de cada mes.
+                ✅ En cada mes, desde enero hasta {['', 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'][yearComparisonMonth]}, solo se considerarán los datos desde el día 1 hasta el día {yearComparisonDay}.
+              </p>
+              <p className="text-xs text-blue-600 mt-1 font-semibold">
+                Ejemplo: Si seleccionas día 12, verás Enero 1-12, Febrero 1-12, Marzo 1-12, etc.
               </p>
             </div>
             <label className="block text-base font-semibold text-gray-800 mb-3">
@@ -835,7 +837,7 @@ export default function RetailDashboard() {
               </div>
             </div>
             <p className="text-sm text-purple-600 mt-3 font-semibold">
-              📊 Comparando {dayComparisonYear1} vs {dayComparisonYear2}: desde enero hasta {['', 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'][yearComparisonMonth]} (hasta día {yearComparisonDay})
+              📊 Comparando {dayComparisonYear1} vs {dayComparisonYear2}: desde enero hasta {['', 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'][yearComparisonMonth]} (días 1 al {yearComparisonDay} en cada mes)
             </p>
           </div>
         )}

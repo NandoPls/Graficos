@@ -515,17 +515,13 @@ export function generateYearToYearDayComparison(yearlyData, year1, year2, cutoff
     const monthNumber = monthIndex + 1;
     const dataPoint = { month: monthName };
 
-    // Determinar hasta qué día comparar en este mes
-    let maxDay = cutoffDay;
-    // Si el mes es posterior al mes límite, usar todos los días del mes
-    // Si es el mes límite, usar cutoffDay
-    // Si es anterior al mes límite, usar todos los días del mes
+    // No incluir meses posteriores al mes límite
     if (monthNumber > cutoffMonth) {
-      return; // No incluir meses posteriores al mes límite
-    } else if (monthNumber < cutoffMonth) {
-      // Para meses anteriores, usar todos los días disponibles
-      maxDay = 31; // Usamos 31 como máximo, la función manejará si no existen
+      return;
     }
+
+    // Para TODOS los meses hasta el mes límite, usar el mismo cutoffDay
+    const maxDay = cutoffDay;
 
     // Obtener tiendas a comparar
     const storesToCompare = Object.keys(selectedStores).filter(
