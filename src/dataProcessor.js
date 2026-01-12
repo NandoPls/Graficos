@@ -502,3 +502,132 @@ export function generateDateBasedComparisonFromWeekly(yearlyData, weeklyData, cu
       return obj;
     });
 }
+
+// Función para comparar dos años específicos hasta un día del año
+export function generateYearToYearDayComparison(yearlyData, year1, year2, cutoffMonth, cutoffDay, selectedStores, selectedMetric) {
+  if (!yearlyData || !yearlyData[year1] || !yearlyData[year2]) return [];
+
+  const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+  const comparisonData = [];
+
+  // Para cada mes, comparar los datos hasta el día límite
+  monthNames.forEach((monthName, monthIndex) => {
+    const monthNumber = monthIndex + 1;
+    const dataPoint = { month: monthName };
+
+    // Determinar hasta qué día comparar en este mes
+    let maxDay = cutoffDay;
+    // Si el mes es posterior al mes límite, usar todos los días del mes
+    // Si es el mes límite, usar cutoffDay
+    // Si es anterior al mes límite, usar todos los días del mes
+    if (monthNumber > cutoffMonth) {
+      return; // No incluir meses posteriores al mes límite
+    } else if (monthNumber < cutoffMonth) {
+      // Para meses anteriores, usar todos los días disponibles
+      maxDay = 31; // Usamos 31 como máximo, la función manejará si no existen
+    }
+
+    // Obtener tiendas a comparar
+    const storesToCompare = Object.keys(selectedStores).filter(
+      storeName => selectedStores[storeName] && storeName !== 'Resumen'
+    );
+
+    // Verificar si solo "Resumen" está seleccionado
+    const onlyResumenSelected = selectedStores['Resumen'] && storesToCompare.length === 0;
+
+    // Procesar cada tienda SOLO si no está en modo "solo Resumen"
+    if (!onlyResumenSelected) {
+      storesToCompare.forEach(storeName => {
+        // Datos año 1
+        let year1Total = { flujo: 0, boletas: 0 };
+        if (yearlyData[year1][storeName] && yearlyData[year1][storeName][monthNumber]) {
+          for (let day = 1; day <= maxDay; day++) {
+            const dayData = yearlyData[year1][storeName][monthNumber][day];
+            if (dayData) {
+              year1Total.flujo += dayData.flujo || 0;
+              year1Total.boletas += dayData.boletas || 0;
+            }
+          }
+        }
+
+        // Datos año 2
+        let year2Total = { flujo: 0, boletas: 0 };
+        if (yearlyData[year2][storeName] && yearlyData[year2][storeName][monthNumber]) {
+          for (let day = 1; day <= maxDay; day++) {
+            const dayData = yearlyData[year2][storeName][monthNumber][day];
+            if (dayData) {
+              year2Total.flujo += dayData.flujo || 0;
+              year2Total.boletas += dayData.boletas || 0;
+            }
+          }
+        }
+
+        // Calcular conversión
+        const year1Conversion = year1Total.flujo > 0
+          ? parseFloat(((year1Total.boletas / year1Total.flujo) * 100).toFixed(1))
+          : 0;
+        const year2Conversion = year2Total.flujo > 0
+          ? parseFloat(((year2Total.boletas / year2Total.flujo) * 100).toFixed(1))
+          : 0;
+
+        // Agregar al dataPoint
+        dataPoint[`${storeName} ${year1}`] = selectedMetric === 'conversion'
+          ? year1Conversion
+          : year1Total[selectedMetric];
+        dataPoint[`${storeName} ${year2}`] = selectedMetric === 'conversion'
+          ? year2Conversion
+          : year2Total[selectedMetric];
+      });
+    }
+
+    // Agregar Resumen si está seleccionado
+    if (selectedStores['Resumen']) {
+      let year1Resumen = { flujo: 0, boletas: 0 };
+      let year2Resumen = { flujo: 0, boletas: 0 };
+
+      // Sumar todas las tiendas para año 1
+      Object.keys(yearlyData[year1]).forEach(storeName => {
+        if (yearlyData[year1][storeName][monthNumber]) {
+          for (let day = 1; day <= maxDay; day++) {
+            const dayData = yearlyData[year1][storeName][monthNumber][day];
+            if (dayData) {
+              year1Resumen.flujo += dayData.flujo || 0;
+              year1Resumen.boletas += dayData.boletas || 0;
+            }
+          }
+        }
+      });
+
+      // Sumar todas las tiendas para año 2
+      Object.keys(yearlyData[year2]).forEach(storeName => {
+        if (yearlyData[year2][storeName][monthNumber]) {
+          for (let day = 1; day <= maxDay; day++) {
+            const dayData = yearlyData[year2][storeName][monthNumber][day];
+            if (dayData) {
+              year2Resumen.flujo += dayData.flujo || 0;
+              year2Resumen.boletas += dayData.boletas || 0;
+            }
+          }
+        }
+      });
+
+      const year1Conversion = year1Resumen.flujo > 0
+        ? parseFloat(((year1Resumen.boletas / year1Resumen.flujo) * 100).toFixed(1))
+        : 0;
+      const year2Conversion = year2Resumen.flujo > 0
+        ? parseFloat(((year2Resumen.boletas / year2Resumen.flujo) * 100).toFixed(1))
+        : 0;
+
+      dataPoint[`Resumen ${year1}`] = selectedMetric === 'conversion'
+        ? year1Conversion
+        : year1Resumen[selectedMetric];
+      dataPoint[`Resumen ${year2}`] = selectedMetric === 'conversion'
+        ? year2Conversion
+        : year2Resumen[selectedMetric];
+    }
+
+    comparisonData.push(dataPoint);
+  });
+
+  return comparisonData;
+}
